@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LKPD Digital: Pengenalan Pola (Pattern Recognition)</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#eef2ff',
+                            100: '#e0e7ff',
+                            500: '#6366f1',
+                            600: '#4f46e5',
+                            700: '#4338ca',
+                            900: '#312e81',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @media print {
+            .no-print { display: none !important; }
+            .print-only { display: block !important; }
+            body { background: white; color: black; font-size: 11pt; }
+            .card-box { border: 1px solid #ccc !important; shadow: none !important; page-break-inside: avoid; }
+            textarea, input, select { border: 1px solid #999 !important; background: transparent !important; }
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(0,0,0,0.05);
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(99, 102, 241, 0.4);
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 min-h-screen font-sans transition-colors duration-200">
+
+    <!-- Sticky Top Navigation -->
+    <header class="no-print sticky top-0 z-40 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-xl bg-brand-600 flex items-center justify-center text-white font-bold text-xl shadow-md shadow-brand-500/30">
+                    CT
+                </div>
+                <div>
+                <h1 class="text-base font-bold leading-tight text-slate-900 dark:text-white">Pengenalan Pola</h1>
+                <p class="text-xs text-slate-500 dark:text-slate-400">Koding &amp; Kecerdasan Artifisial • Pertemuan 4</p>
+            </div>
+        </div>
+
+        <!-- Header Action Controls -->
+        <div class="flex items-center space-x-2">
+            <button onclick="toggleDarkMode()" class="p-2 text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+                <svg id="sun-icon" class="w-4 h-4 hidden dark:block" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+                <svg id="moon-icon" class="w-4 h-4 block dark:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
+            </button>
+        </div>
+    </div>
+</header>
+
+<main class="max-w-5xl mx-auto px-4 sm:px-6 py-8 space-y-8">
+
+        <!-- Cover Banner / Metadata Card -->
+        <div class="card-box bg-white dark:bg-slate-800 rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200 dark:border-slate-700 relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-64 h-64 bg-brand-500/10 rounded-full blur-3xl pointer-events-none"></div>
+            
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 border-b border-slate-200 dark:border-slate-700 pb-6 mb-6">
+                <div>
+                    <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold bg-brand-100 dark:bg-brand-900/50 text-brand-700 dark:text-brand-300 mb-2">
+                        Computational Thinking — Pertemuan 4
+                    </span>
+                    <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+                        Detektif Pola: Pemecahan Masalah Lingkungan
+                    </h2>
+                    <p class="text-sm text-slate-600 dark:text-slate-300 mt-1">
+                        Mata Pelajaran: Koding dan Kecerdasan Artifisial (Kelas X SMK) • Alokasi Waktu: 2 JP (2 × 40 Menit)
+                    </p>
+                </div>
+                <div class="text-right flex-shrink-0">
+                    <span class="inline-flex items-center gap-1.5 text-xs font-medium text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/50 px-3 py-1.5 rounded-lg border border-emerald-200 dark:border-emerald-800">
+                        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                        Status: Lembar Kerja Aktif
+                    </span>
+                </div>
+            </div>
+
+            <!-- Identity Inputs -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Nama Kelompok</label>
+                    <input type="text" id="group-name" placeholder="Contoh: Kelompok CT-01" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-brand-500 outline-none transition-all">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Kelas / Jurusan</label>
+                    <input type="text" id="group-class" placeholder="Contoh: X PPLG 1" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-brand-500 outline-none transition-all">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Tanggal Pengerjaan</label>
+                    <input type="date" id="group-date" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-brand-500 outline-none transition-all">
+                </div>
+            </div>
+        </div>
+
+        <!-- Section A & B Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Section A: Tujuan Tugas -->
+            <div class="card-box bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-sm border border-slate-200 dark:border-slate-700 flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center gap-2 mb-3">
+                        <div class="p-2 rounded-lg bg-indigo-100 dark:bg-indigo-900/50 text-indigo-600 dark:text-indigo-300">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        </div>
+                        <h3 class="font-bold text-lg text-slate-900 dark:text-white">A. Tujuan Tugas</h3>
+                    </div>
+                    <ul class="space-y-2 text-sm text-slate-600 dark:text-slate-300">
+                        <li class="flex items-start gap-2">
+                            <span class="text-brand-500 font-bold">•</span>
+                            <span>Memahami konsep pola dalam suatu masalah lingkungan.</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-brand-500 font-bold">•</span>
+                            <span>Menemukan kesamaan atau kecenderungan yang muncul.</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-brand-500 font-bold">•</span>
+                            <span>Menganalisis pola dari data pengamatan lingkungan sekolah.</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-brand-500 font-bold">•</span>
+                            <span>Menggunakan pola untuk menentukan solusi yang presisi.</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Section B: Pengantar Singkat -->
+            <div class="card-box bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-sm border border-slate-200 dark:border-slate-700 flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center gap-2 mb-3">
+                        <div class="p-2 rounded-lg bg-amber-100 dark:bg-amber-900/50 text-amber-600 dark:text-amber-300">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        </div>
+                        <h3 class="font-bold text-lg text-slate-900 dark:text-white">B. Pengantar Singkat</h3>
+                    </div>
+                    <p class="text-sm text-slate-600 dark:text-slate-300 mb-3 leading-relaxed">
+                        <strong>Pengenalan Pola (Pattern Recognition)</strong> adalah kemampuan mencari kesamaan, keteraturan, pengulangan, atau kecenderungan dari data atau permasalahan yang telah didekomposisi.
+                    </p>
+                    <div class="bg-slate-50 dark:bg-slate-900/60 p-3 rounded-xl text-xs text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-700">
+                        <span class="font-semibold text-slate-800 dark:text-slate-200">Pertanyaan Pemandu Detektif Pola:</span>
+                        <div class="grid grid-cols-2 gap-1 mt-1">
+                            <div>• Kapan sering terjadi?</div>
+                            <div>• Di mana lokasinya?</div>
+                            <div>• Apa kejadian sebelumnya?</div>
+                            <div>• Apa dampak setelahnya?</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section H: Pembagian Tugas Kelompok -->
+        <div class="card-box bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-sm border border-slate-200 dark:border-slate-700">
+            <div class="flex items-center justify-between mb-4">
+                <div class="flex items-center gap-2">
+                    <div class="p-2 rounded-lg bg-purple-100 dark:bg-purple-900/50 text-purple-600 dark:text-purple-300">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+                    </div>
+                    <h3 class="font-bold text-lg text-slate-900 dark:text-white">H. Pembagian Tugas dalam Kelompok</h3>
+                </div>
+                <span class="text-xs text-slate-500">Pastikan seluruh anggota berkontribusi</span>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+                <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700">
+                    <span class="text-xs font-bold text-brand-600 dark:text-brand-400 block mb-1">Ketua Kelompok</span>
+                    <input type="text" id="role-ketua" placeholder="Nama..." class="w-full bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg px-2.5 py-1.5 text-xs focus:ring-2 focus:ring-brand-500 outline-none">
+                    <span class="text-[10px] text-slate-400 block mt-1">Mengatur pekerjaan</span>
+                </div>
+                <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700">
+                    <span class="text-xs font-bold text-emerald-600 dark:text-emerald-400 block mb-1">Pengamat Data</span>
+                    <input type="text" id="role-pengamat" placeholder="Nama..." class="w-full bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg px-2.5 py-1.5 text-xs focus:ring-2 focus:ring-brand-500 outline-none">
+                    <span class="text-[10px] text-slate-400 block mt-1">Mengumpulkan data</span>
+                </div>
+                <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700">
+                    <span class="text-xs font-bold text-amber-600 dark:text-amber-400 block mb-1">Analis Pola</span>
+                    <input type="text" id="role-analis" placeholder="Nama..." class="w-full bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg px-2.5 py-1.5 text-xs focus:ring-2 focus:ring-brand-500 outline-none">
+                    <span class="text-[10px] text-slate-400 block mt-1">Mencari pola data</span>
+                </div>
+                <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700">
+                    <span class="text-xs font-bold text-rose-600 dark:text-rose-400 block mb-1">Penulis Laporan</span>
+                    <input type="text" id="role-penulis" placeholder="Nama..." class="w-full bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg px-2.5 py-1.5 text-xs focus:ring-2 focus:ring-brand-500 outline-none">
+                    <span class="text-[10px] text-slate-400 block mt-1">Menuliskan hasil</span>
+                </div>
+                <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700">
+                    <span class="text-xs font-bold text-cyan-600 dark:text-cyan-400 block mb-1">Presenter</span>
+                    <input type="text" id="role-presenter" placeholder="Nama..." class="w-full bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg px-2.5 py-1.5 text-xs focus:ring-2 focus:ring-brand-500 outline-none">
+                    <span class="text-[10px] text-slate-400 block mt-1">Menyampaikan diskusi</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Langkah 1 & 2 Section -->
+        <div class="card-box bg-white dark:bg-slate-800 rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200 dark:border-slate-700 space-y-6">
+            
+            <!-- Langkah 1 -->
+            <div>
+                <div class="flex items-center gap-2 mb-4">
+                    <span class="w-7 h-7 rounded-lg bg-brand-600 text-white flex items-center justify-center font-bold text-sm">1</span>
+                    <h3 class="font-bold text-lg text-slate-900 dark:text-white">Langkah 1 — Ingat Kembali Masalah Kelompok</h3>
+                </div>
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">Masalah Utama (Permasalahan Lingkungan Sekolah):</label>
+                        <input type="text" id="step1-problem" placeholder="Contoh: Sampah kemasan plastik menumpuk dan berserakan di sekitar area kantin..." class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-brand-500 outline-none">
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">Lokasi Terjadinya Masalah:</label>
+                            <input type="text" id="step1-location" placeholder="Contoh: Area Depan Kantin Sekolah dan Taman Samping" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-brand-500 outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">Mengapa Penting Diselesaikan?</label>
+                            <input type="text" id="step1-urgency" placeholder="Contoh: Menimbulkan bau tidak sedap, mengganggu pemandangan, dan tempat sarang lalat." class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-brand-500 outline-none">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="border-slate-200 dark:border-slate-700">
+
+            <!-- Langkah 2 -->
+            <div>
+                <div class="flex items-center gap-2 mb-4">
+                    <span class="w-7 h-7 rounded-lg bg-brand-600 text-white flex items-center justify-center font-bold text-sm">2</span>
+                    <h3 class="font-bold text-lg text-slate-900 dark:text-white">Langkah 2 — Hasil Dekomposisi Masalah (Pertemuan Ke-3)</h3>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-slate-400 mb-3">Tuliskan minimal 3 - 5 bagian kecil dari hasil pemecahan masalah kalian:</p>
+                <div class="space-y-2.5">
+                    <div class="flex items-center gap-3">
+                        <span class="text-xs font-bold text-slate-400 w-4">1.</span>
+                        <input type="text" id="decomp-1" placeholder="Bagian 1: Jenis sampah yang paling dominan (kantong plastik & kemasan makanan snack)" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg px-3.5 py-2 text-sm focus:ring-2 focus:ring-brand-500 outline-none">
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <span class="text-xs font-bold text-slate-400 w-4">2.</span>
+                        <input type="text" id="decomp-2" placeholder="Bagian 2: Waktu munculnya puncak volume sampah" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg px-3.5 py-2 text-sm focus:ring-2 focus:ring-brand-500 outline-none">
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <span class="text-xs font-bold text-slate-400 w-4">3.</span>
+                        <input type="text" id="decomp-3" placeholder="Bagian 3: Ketersediaan dan daya tampung tempat sampah di lokasi" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg px-3.5 py-2 text-sm focus:ring-2 focus:ring-brand-500 outline-none">
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <span class="text-xs font-bold text-slate-400 w-4">4.</span>
+                        <input type="text" id="decomp-4" placeholder="Bagian 4: Perilaku dan kesadaran siswa saat meninggalkan area kantin" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg px-3.5 py-2 text-sm focus:ring-2 focus:ring-brand-500 outline-none">
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <span class="text-xs font-bold text-slate-400 w-4">5.</span>
+                        <input type="text" id="decomp-5" placeholder="Bagian 5: Jadwal pembersihan petugas kebersihan sekolah" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg px-3.5 py-2 text-sm focus:ring-2 focus:ring-brand-500 outline-none">
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Langkah 3: Jadilah Detektif Pola -->
+        <div class="card-box bg-white dark:bg-slate-800 rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200 dark:border-slate-700 space-y-6">
+            <div class="flex items-center gap-2">
+                <span class="w-7 h-7 rounded-lg bg-brand-600 text-white flex items-center justify-center font-bold text-sm">3</span>
+                <h3 class="font-bold text-lg text-slate-900 dark:text-white">Langkah 3 — Analisis "Detektif Pola"</h3>
+            </div>
+            <p class="text-xs text-slate-500 dark:text-slate-400">Jawablah pertanyaan investigasi berikut berdasarkan fenomena yang diamati:</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <div class="space-y-1">
+                    <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300">1. Kapan masalah tersebut paling sering terjadi?</label>
+                    <textarea id="q1-when" rows="2" placeholder="Contoh: Tepat 5-10 menit setelah bel istirahat pertama dan kedua berbunyi." class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl p-3 text-sm focus:ring-2 focus:ring-brand-500 outline-none custom-scrollbar"></textarea>
+                </div>
+                <div class="space-y-1">
+                    <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300">2. Di mana masalah tersebut paling sering terjadi?</label>
+                    <textarea id="q2-where" rows="2" placeholder="Contoh: Di meja-meja tempat duduk kantin dan sekitar tempat sampah yang penuh." class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl p-3 text-sm focus:ring-2 focus:ring-brand-500 outline-none custom-scrollbar"></textarea>
+                </div>
+                <div class="space-y-1">
+                    <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300">3. Apakah masalah terjadi berulang kali?</label>
+                    <div class="flex items-center gap-4 py-1">
+                        <label class="inline-flex items-center gap-1.5 text-xs font-medium">
+                            <input type="radio" name="q3-repeat" value="Ya" checked class="text-brand-600 focus:ring-brand-500"> Ya
+                        </label>
+                        <label class="inline-flex items-center gap-1.5 text-xs font-medium">
+                            <input type="radio" name="q3-repeat" value="Tidak" class="text-brand-600 focus:ring-brand-500"> Tidak
+                        </label>
+                    </div>
+                    <textarea id="q3-explain" rows="2" placeholder="Penjelasan: Ya, berulang setiap hari kerja sekolah saat jam istirahat." class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl p-3 text-sm focus:ring-2 focus:ring-brand-500 outline-none custom-scrollbar"></textarea>
+                </div>
+                <div class="space-y-1">
+                    <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300">4. Apa yang biasanya terjadi SEBELUM masalah muncul?</label>
+                    <textarea id="q4-before" rows="2" placeholder="Contoh: Antrean panjang pembeli jajanan makanan dan minuman di kantin." class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl p-3 text-sm focus:ring-2 focus:ring-brand-500 outline-none custom-scrollbar"></textarea>
+                </div>
+                <div class="space-y-1">
+                    <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300">5. Apa yang biasanya terjadi SETELAH masalah muncul?</label>
+                    <textarea id="q5-after" rows="2" placeholder="Contoh: Bel masuk kelas berbunyi, siswa terburu-buru meninggalkan sampah di meja." class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl p-3 text-sm focus:ring-2 focus:ring-brand-500 outline-none custom-scrollbar"></textarea>
+                </div>
+                <div class="space-y-1">
+                    <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300">6. Apakah ada kesamaan dari beberapa kejadian?</label>
+                    <textarea id="q6-similarity" rows="2" placeholder="Contoh: Mayoritas sampah adalah bungkus plastik sekali pakai dari jenis jualan tertentu." class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl p-3 text-sm focus:ring-2 focus:ring-brand-500 outline-none custom-scrollbar"></textarea>
+                </div>
+            </div>
+
+            <div class="space-y-1 pt-2">
+                <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300">7. Siapa atau apa yang paling sering berkaitan dengan masalah tersebut?</label>
+                <input type="text" id="q7-who" placeholder="Contoh: Siswa pembeli makanan kemasan instan dan ketersediaan tempat sampah yang terbatas." class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-brand-500 outline-none">
+            </div>
+        </div>
+
+        <!-- Langkah 4: Tabel Pengamatan -->
+        <div class="card-box bg-white dark:bg-slate-800 rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200 dark:border-slate-700 space-y-4">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                <div class="flex items-center gap-2">
+                    <span class="w-7 h-7 rounded-lg bg-brand-600 text-white flex items-center justify-center font-bold text-sm">4</span>
+                    <div>
+                        <h3 class="font-bold text-lg text-slate-900 dark:text-white">Langkah 4 — Tabel Pengamatan Data</h3>
+                        <p class="text-xs text-slate-500">Catat minimal 5 baris data kejadian/pengamatan lingkungan</p>
+                    </div>
+                </div>
+                <button onclick="addTableRow()" class="no-print self-start sm:self-auto px-3 py-1.5 text-xs font-semibold rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 transition-colors flex items-center gap-1">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                    Tambah Baris
+                </button>
+            </div>
+
+            <div class="overflow-x-auto custom-scrollbar">
+                <table class="w-full text-left border-collapse min-w-[600px]">
+                    <thead>
+                        <tr class="bg-slate-100 dark:bg-slate-900/80 text-slate-700 dark:text-slate-300 text-xs font-bold uppercase tracking-wider">
+                            <th class="p-3 rounded-l-lg w-12 text-center">No</th>
+                            <th class="p-3 w-32">Waktu</th>
+                            <th class="p-3 w-36">Lokasi</th>
+                            <th class="p-3">Kejadian</th>
+                            <th class="p-3 w-44">Kondisi Sampah/Lingkungan</th>
+                            <th class="p-3 w-12 text-center no-print">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="observation-tbody" class="divide-y divide-slate-200 dark:divide-slate-700 text-xs">
+                        <!-- Dynamic Rows injected via JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Langkah 5 & 6 Section -->
+        <div class="card-box bg-white dark:bg-slate-800 rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200 dark:border-slate-700 space-y-6">
+            
+            <!-- Langkah 5 -->
+            <div>
+                <div class="flex items-center gap-2 mb-3">
+                    <span class="w-7 h-7 rounded-lg bg-brand-600 text-white flex items-center justify-center font-bold text-sm">5</span>
+                    <h3 class="font-bold text-lg text-slate-900 dark:text-white">Langkah 5 — Temukan Polanya!</h3>
+                </div>
+                <p class="text-xs text-slate-500 mb-4">Setelah menganalisis data di atas, rumuskan minimal 2 pola utama yang kalian temukan:</p>
+
+                <div class="space-y-3">
+                    <div class="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700">
+                        <label class="block text-xs font-bold text-brand-600 dark:text-brand-400 mb-1">Pola 1 (Waktu vs Dampak):</label>
+                        <input type="text" id="pattern-1" placeholder="Contoh: Penumpukan sampah plastik selalu mencapai puncaknya 10 menit setelah jam istirahat sekolah." class="w-full bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-brand-500 outline-none">
+                    </div>
+                    <div class="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700">
+                        <label class="block text-xs font-bold text-brand-600 dark:text-brand-400 mb-1">Pola 2 (Lokasi &amp; Perilaku):</label>
+                        <input type="text" id="pattern-2" placeholder="Contoh: Sampah berserakan paling banyak terkonsentrasi di area meja makan yang jauh dari letak tempat sampah." class="w-full bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-brand-500 outline-none">
+                    </div>
+                    <div class="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700">
+                        <label class="block text-xs font-bold text-slate-500 mb-1">Pola Tambahan (Opsional):</label>
+                        <input type="text" id="pattern-3" placeholder="Contoh: Penggunaan wadah makanan sekali pakai meningkat tajam pada hari Senin &amp; Jumat." class="w-full bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-brand-500 outline-none">
+                    </div>
+                </div>
+            </div>
+
+            <hr class="border-slate-200 dark:border-slate-700">
+
+            <!-- Langkah 6 -->
+            <div>
+                <div class="flex items-center gap-2 mb-3">
+                    <span class="w-7 h-7 rounded-lg bg-brand-600 text-white flex items-center justify-center font-bold text-sm">6</span>
+                    <h3 class="font-bold text-lg text-slate-900 dark:text-white">Langkah 6 — Formulasi Kesimpulan Pola</h3>
+                </div>
+
+                <!-- Template Sentence Builder -->
+                <div class="p-4 rounded-xl bg-brand-50 dark:bg-brand-950/40 border border-brand-200 dark:border-brand-800/60 mb-4">
+                    <p class="text-xs font-semibold text-brand-900 dark:text-brand-200 mb-2 uppercase tracking-wider">Template Kalimat Kesimpulan:</p>
+                    <div class="text-sm leading-relaxed text-slate-800 dark:text-slate-200 flex flex-wrap items-center gap-1.5">
+                        <span>"Berdasarkan hasil pengamatan, kami menemukan bahwa masalah</span>
+                        <input type="text" id="c-problem" placeholder="[nama masalah]" class="bg-white dark:bg-slate-800 border border-brand-300 dark:border-brand-700 rounded px-2 py-1 text-xs focus:ring-2 focus:ring-brand-500 outline-none inline-block w-40">
+                        <span>cenderung terjadi ketika</span>
+                        <input type="text" id="c-condition" placeholder="[kondisi/waktu]" class="bg-white dark:bg-slate-800 border border-brand-300 dark:border-brand-700 rounded px-2 py-1 text-xs focus:ring-2 focus:ring-brand-500 outline-none inline-block w-48">
+                        <span>dan paling sering ditemukan di</span>
+                        <input type="text" id="c-location" placeholder="[lokasi spesifik]" class="bg-white dark:bg-slate-800 border border-brand-300 dark:border-brand-700 rounded px-2 py-1 text-xs focus:ring-2 focus:ring-brand-500 outline-none inline-block w-44">
+                        <span>."</span>
+                    </div>
+                </div>
+
+                <div class="space-y-1">
+                    <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300">Mengapa pola tersebut sangat PENTING untuk penyelesaian masalah?</label>
+                    <textarea id="pattern-importance" rows="3" placeholder="Jelaskan alasan kalian (misal: Dengan mengetahui jam puncak dan lokasi penumpukan, kita bisa menempatkan relawan kebersihan atau menambah tempat sampah persis di lokasi dan jam tersebut)..." class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl p-3 text-sm focus:ring-2 focus:ring-brand-500 outline-none custom-scrollbar"></textarea>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Section E: Tantangan - Apakah Ini Benar-Benar Pola? -->
+        <div class="card-box bg-white dark:bg-slate-800 rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200 dark:border-slate-700 space-y-4">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-200 dark:border-slate-700 pb-4">
+                <div class="flex items-center gap-2">
+                    <div class="p-2 rounded-lg bg-rose-100 dark:bg-rose-900/50 text-rose-600 dark:text-rose-300">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-lg text-slate-900 dark:text-white">E. Tantangan: Apakah Ini Benar-Benar Pola?</h3>
+                        <p class="text-xs text-slate-500">Uji pemahaman kalian tentang konsep Pola vs Kejadian Biasa (Bukan Pola)</p>
+                    </div>
+                </div>
+                <div id="quiz-score-badge" class="no-print hidden px-3 py-1 rounded-full text-xs font-bold bg-slate-100 text-slate-700 dark:bg-slate-700 dark:text-slate-300">
+                    Skor Tantangan: <span id="score-val">0</span> / 5
+                </div>
+            </div>
+
+            <div class="space-y-4" id="quiz-container">
+                <!-- Quiz Item 1 -->
+                <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 space-y-3">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                        <p class="text-sm font-medium text-slate-800 dark:text-slate-200">1. "Sampah di kantin meningkat setelah jam istirahat."</p>
+                        <div class="flex items-center gap-2">
+                            <select id="q-opt-1" onchange="checkQuiz()" class="bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-xs rounded-lg px-3 py-1.5 font-semibold outline-none focus:ring-2 focus:ring-brand-500">
+                                <option value="">-- Pilih Jawaban --</option>
+                                <option value="POLA">POLA</option>
+                                <option value="BUKAN POLA">BUKAN POLA</option>
+                            </select>
+                            <span id="badge-1" class="text-xs font-bold px-2 py-1 rounded hidden"></span>
+                        </div>
+                    </div>
+                    <input type="text" id="q-exp-1" placeholder="Alasan jawaban kalian..." class="w-full bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg px-3 py-1.5 text-xs focus:ring-2 focus:ring-brand-500 outline-none">
+                </div>
+
+                <!-- Quiz Item 2 -->
+                <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 space-y-3">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                        <p class="text-sm font-medium text-slate-800 dark:text-slate-200">2. "Hari ini seorang siswa membuang sampah sembarangan."</p>
+                        <div class="flex items-center gap-2">
+                            <select id="q-opt-2" onchange="checkQuiz()" class="bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-xs rounded-lg px-3 py-1.5 font-semibold outline-none focus:ring-2 focus:ring-brand-500">
+                                <option value="">-- Pilih Jawaban --</option>
+                                <option value="POLA">POLA</option>
+                                <option value="BUKAN POLA">BUKAN POLA</option>
+                            </select>
+                            <span id="badge-2" class="text-xs font-bold px-2 py-1 rounded hidden"></span>
+                        </div>
+                    </div>
+                    <input type="text" id="q-exp-2" placeholder="Alasan jawaban kalian..." class="w-full bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg px-3 py-1.5 text-xs focus:ring-2 focus:ring-brand-500 outline-none">
+                </div>
+
+                <!-- Quiz Item 3 -->
+                <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 space-y-3">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                        <p class="text-sm font-medium text-slate-800 dark:text-slate-200">3. "Setiap hujan deras, halaman sekolah menjadi becek."</p>
+                        <div class="flex items-center gap-2">
+                            <select id="q-opt-3" onchange="checkQuiz()" class="bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-xs rounded-lg px-3 py-1.5 font-semibold outline-none focus:ring-2 focus:ring-brand-500">
+                                <option value="">-- Pilih Jawaban --</option>
+                                <option value="POLA">POLA</option>
+                                <option value="BUKAN POLA">BUKAN POLA</option>
+                            </select>
+                            <span id="badge-3" class="text-xs font-bold px-2 py-1 rounded hidden"></span>
+                        </div>
+                    </div>
+                    <input type="text" id="q-exp-3" placeholder="Alasan jawaban kalian..." class="w-full bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg px-3 py-1.5 text-xs focus:ring-2 focus:ring-brand-500 outline-none">
+                </div>
+
+                <!-- Quiz Item 4 -->
+                <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 space-y-3">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                        <p class="text-sm font-medium text-slate-800 dark:text-slate-200">4. "Seorang siswa lupa membawa buku hari ini."</p>
+                        <div class="flex items-center gap-2">
+                            <select id="q-opt-4" onchange="checkQuiz()" class="bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-xs rounded-lg px-3 py-1.5 font-semibold outline-none focus:ring-2 focus:ring-brand-500">
+                                <option value="">-- Pilih Jawaban --</option>
+                                <option value="POLA">POLA</option>
+                                <option value="BUKAN POLA">BUKAN POLA</option>
+                            </select>
+                            <span id="badge-4" class="text-xs font-bold px-2 py-1 rounded hidden"></span>
+                        </div>
+                    </div>
+                    <input type="text" id="q-exp-4" placeholder="Alasan jawaban kalian..." class="w-full bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg px-3 py-1.5 text-xs focus:ring-2 focus:ring-brand-500 outline-none">
+                </div>
+
+                <!-- Quiz Item 5 -->
+                <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 space-y-3">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                        <p class="text-sm font-medium text-slate-800 dark:text-slate-200">5. "Keterlambatan siswa lebih banyak terjadi pada hari Senin."</p>
+                        <div class="flex items-center gap-2">
+                            <select id="q-opt-5" onchange="checkQuiz()" class="bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-xs rounded-lg px-3 py-1.5 font-semibold outline-none focus:ring-2 focus:ring-brand-500">
+                                <option value="">-- Pilih Jawaban --</option>
+                                <option value="POLA">POLA</option>
+                                <option value="BUKAN POLA">BUKAN POLA</option>
+                            </select>
+                            <span id="badge-5" class="text-xs font-bold px-2 py-1 rounded hidden"></span>
+                        </div>
+                    </div>
+                    <input type="text" id="q-exp-5" placeholder="Alasan jawaban kalian..." class="w-full bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg px-3 py-1.5 text-xs focus:ring-2 focus:ring-brand-500 outline-none">
+                </div>
+            </div>
+        </div>
+
+        <!-- Section F: Hubungkan dengan Solusi Minggu Lalu -->
+        <div class="card-box bg-white dark:bg-slate-800 rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200 dark:border-slate-700 space-y-5">
+            <div class="flex items-center gap-2">
+                <div class="p-2 rounded-lg bg-teal-100 dark:bg-teal-900/50 text-teal-600 dark:text-teal-300">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 4a2 2 0 114 0v1a2 2 0 01-2 2 2 2 0 01-2-2V4zm-6 8a2 2 0 100-4 2 2 0 000 4zm12 0a2 2 0 100-4 2 2 0 000 4zM4 18a2 2 0 100-4 2 2 0 000 4zm12 0a2 2 0 100-4 2 2 0 000 4z"/></svg>
+                </div>
+                <h3 class="font-bold text-lg text-slate-900 dark:text-white">F. Hubungkan dengan Solusi Pertemuan Sebelumnya</h3>
+            </div>
+
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">Solusi Awal Kelompok (Pertemuan 2):</label>
+                    <textarea id="sol-initial" rows="2" placeholder="Contoh: Mengadakan kerja bakti pembersihan sekolah secara umum seminggu sekali." class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl p-3 text-sm focus:ring-2 focus:ring-brand-500 outline-none custom-scrollbar"></textarea>
+                </div>
+
+                <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-900/70 border border-slate-200 dark:border-slate-700 space-y-3">
+                    <label class="block text-xs font-semibold text-slate-800 dark:text-slate-200">
+                        Setelah menemukan POLA, apakah solusi awal tersebut masih tepat dan efektif?
+                    </label>
+                    <div class="flex items-center gap-6">
+                        <label class="inline-flex items-center gap-2 text-sm font-medium">
+                            <input type="radio" name="sol-eval" value="Ya" checked class="text-brand-600 focus:ring-brand-500"> Ya, Masih Tepat
+                        </label>
+                        <label class="inline-flex items-center gap-2 text-sm font-medium">
+                            <input type="radio" name="sol-eval" value="Perlu Perbaikan" class="text-brand-600 focus:ring-brand-500"> Perlu Perbaikan / Penyesuaian
+                        </label>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1">Jelaskan alasannya berdasarkan pola yang ditemukan:</label>
+                        <textarea id="sol-eval-reason" rows="2" placeholder="Contoh: Kerja bakti mingguan kurang efektif karena sampah menumpuk setiap hari setelah istirahat. Diperlukan penanganan yang tepat pada saat jam puncak tersebut." class="w-full bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg p-2.5 text-xs focus:ring-2 focus:ring-brand-500 outline-none custom-scrollbar"></textarea>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                        Solusi yang Telah Diperbaiki (Lebih Berbasis Pola):
+                    </label>
+                    <textarea id="sol-improved" rows="3" placeholder="Contoh: Menyiapkan jadwal piket patroli kantin tepat 5 menit sebelum istirahat selesai & menambah unit bin sampah khusus kemasan plastik di sudut meja makan." class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl p-3 text-sm focus:ring-2 focus:ring-brand-500 outline-none custom-scrollbar"></textarea>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section J: Refleksi Individu -->
+        <div class="card-box bg-white dark:bg-slate-800 rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200 dark:border-slate-700 space-y-4">
+            <div class="flex items-center gap-2">
+                <div class="p-2 rounded-lg bg-sky-100 dark:bg-sky-900/50 text-sky-600 dark:text-sky-300">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+                </div>
+                <h3 class="font-bold text-lg text-slate-900 dark:text-white">J. Refleksi Individu Peserta Didik</h3>
+            </div>
+            <p class="text-xs text-slate-500">Dijawab oleh masing-masing siswa untuk mengevaluasi pemahaman pribadi:</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="space-y-1">
+                    <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300">1. Apa hal baru yang saya pahami hari ini?</label>
+                    <textarea id="ref-1" rows="2" placeholder="Tuliskan pemahaman baru kalian..." class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl p-2.5 text-xs focus:ring-2 focus:ring-brand-500 outline-none custom-scrollbar"></textarea>
+                </div>
+                <div class="space-y-1">
+                    <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300">2. Apa perbedaan antara "Memecah Masalah" dan "Mencari Pola"?</label>
+                    <textarea id="ref-2" rows="2" placeholder="Dekomposisi adalah... sedangkan Pengenalan Pola adalah..." class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl p-2.5 text-xs focus:ring-2 focus:ring-brand-500 outline-none custom-scrollbar"></textarea>
+                </div>
+                <div class="space-y-1">
+                    <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300">3. Apa pola paling penting yang ditemukan kelompok saya?</label>
+                    <textarea id="ref-3" rows="2" placeholder="Pola paling penting adalah..." class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl p-2.5 text-xs focus:ring-2 focus:ring-brand-500 outline-none custom-scrollbar"></textarea>
+                </div>
+                <div class="space-y-1">
+                    <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300">4. Bagaimana pola tersebut membantu menemukan solusi?</label>
+                    <textarea id="ref-4" rows="2" placeholder="Pola membantu agar solusi yang dibuat tepat sasaran pada..." class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl p-2.5 text-xs focus:ring-2 focus:ring-brand-500 outline-none custom-scrollbar"></textarea>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section K: Summary Banner & Teaser Abstraksi -->
+        <div class="card-box bg-gradient-to-r from-brand-600 to-indigo-700 rounded-2xl p-6 sm:p-8 text-white shadow-lg space-y-4">
+            <div class="flex items-center gap-3">
+                <span class="p-2 bg-white/20 rounded-xl backdrop-blur">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/></svg>
+                </span>
+                <h3 class="font-extrabold text-xl">K. Kesimpulan &amp; Langkah Berikutnya</h3>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs leading-relaxed text-indigo-100">
+                <div class="bg-white/10 backdrop-blur p-4 rounded-xl border border-white/10">
+                    <strong class="text-white block mb-1">Rangkuman Konsep:</strong>
+                    <ul class="space-y-1">
+                        <li>• <strong>Dekomposisi:</strong> Memecah masalah besar menjadi bagian-bagian kecil.</li>
+                        <li>• <strong>Pengenalan Pola:</strong> Mencari kesamaan, keteraturan, dan kecenderungan dari bagian-bagian tersebut.</li>
+                    </ul>
+                </div>
+                <div class="bg-white/10 backdrop-blur p-4 rounded-xl border border-white/10">
+                    <strong class="text-white block mb-1">Spesial Teaser Pertemuan 5:</strong>
+                    <p class="italic">"Setelah menemukan pola, informasi apa yang sebenarnya paling penting untuk kita gunakan dan mana informasi yang bisa diabaikan?"</p>
+                    <p class="mt-1 font-semibold text-amber-300">→ Topik Selanjutnya: ABSTRAKSI (Abstraction)</p>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Custom Floating Toast Notification -->
+    <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none">
+        <div id="toast-content" class="px-4 py-3 rounded-xl shadow-xl bg-slate-900 text-white text-xs font-medium flex items-center gap-2 border border-slate-700">
+            <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+            <span id="toast-msg">Data berhasil disimpan!</span>
+        </div>
+    </div>
+
+    <script>
+        // Default Sample Observation Rows
+        const defaultObservations = [
+            { time: "09:30 (Istirahat 1)", loc: "Kantin Utama", event: "Banyak siswa antre membeli makanan kemasan & minuman botol", status: "Sampah mulai menumpuk di meja" },
+            { time: "10:00 (Selesai Istirahat)", loc: "Kantin Utama", event: "Siswa kembali ke kelas berburu bel masuk", status: "Sampah berserakan di atas meja" },
+            { time: "11:15 (Jam Pelajaran)", loc: "Kantin Utama", event: "Kondisi sepi pembeli", status: "Sampah tidak bertambah tetapi menumpuk" },
+            { time: "12:15 (Istirahat 2)", loc: "Taman Samping Kantin", event: "Siswa makan siang dan meninggalkan wadah makanan", status: "Sampah meningkat sangat banyak" },
+            { time: "13:00 (Selesai Istirahat)", loc: "Taman Samping Kantin", event: "Siswa meninggalkan tempat duduk", status: "Tempat sampah meluber penuh" }
+        ];
+
+        // Quiz Correct Answers Key
+        const quizAnswers = {
+            1: { ans: "POLA", reason: "Berulang dan memiliki kecenderungan waktu serta tempat yang konsisten." },
+            2: { ans: "BUKAN POLA", reason: "Kejadian tunggal/insidental yang tidak menggambarkan pengulangan atau keteraturan." },
+            3: { ans: "POLA", reason: "Menunjukkan keteraturan hubungan sebab-akibat yang selalu terjadi saat hujan." },
+            4: { ans: "BUKAN POLA", reason: "Kejadian individu yang bersifat insidental dan acak." },
+            5: { ans: "POLA", reason: "Menunjukkan kecenderungan berulang yang terikat pada hari tertentu." }
+        };
+
+        window.onload = function() {
+            // Set current date
+            const dateInput = document.getElementById('group-date');
+            if (dateInput && !dateInput.value) {
+                dateInput.valueAsDate = new Date();
+            }
+
+            // Load saved data or render default table
+            loadSavedData();
+            checkQuiz();
+        };
+
+        // Dark Mode Toggle Function
+        function toggleDarkMode() {
+            document.documentElement.classList.toggle('dark');
+        }
+
+        // Render Table Rows
+        function renderTableRows(dataArray) {
+            const tbody = document.getElementById('observation-tbody');
+            tbody.innerHTML = '';
+            
+            dataArray.forEach((row, index) => {
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors";
+                tr.innerHTML = `
+                    <td class="p-3 text-center font-bold text-slate-400">${index + 1}</td>
+                    <td class="p-2"><input type="text" value="${escapeHtml(row.time)}" class="w-full bg-transparent border border-slate-200 dark:border-slate-700 rounded px-2 py-1 outline-none focus:border-brand-500"></td>
+                    <td class="p-2"><input type="text" value="${escapeHtml(row.loc)}" class="w-full bg-transparent border border-slate-200 dark:border-slate-700 rounded px-2 py-1 outline-none focus:border-brand-500"></td>
+                    <td class="p-2"><input type="text" value="${escapeHtml(row.event)}" class="w-full bg-transparent border border-slate-200 dark:border-slate-700 rounded px-2 py-1 outline-none focus:border-brand-500"></td>
+                    <td class="p-2"><input type="text" value="${escapeHtml(row.status)}" class="w-full bg-transparent border border-slate-200 dark:border-slate-700 rounded px-2 py-1 outline-none focus:border-brand-500"></td>
+                    <td class="p-2 text-center no-print">
+                        <button onclick="removeTableRow(${index})" class="p-1 text-rose-500 hover:text-rose-700 hover:bg-rose-50 dark:hover:bg-rose-950/40 rounded transition-colors" title="Hapus Baris">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function addTableRow() {
+            const currentData = getTableData();
+            currentData.push({ time: "", loc: "", event: "", status: "" });
+            renderTableRows(currentData);
+        }
+
+        function removeTableRow(index) {
+            const currentData = getTableData();
+            if (currentData.length <= 1) {
+                showToast("Minimal harus menyisakan 1 baris data!");
+                return;
+            }
+            currentData.splice(index, 1);
+            renderTableRows(currentData);
+        }
+
+        function getTableData() {
+            const tbody = document.getElementById('observation-tbody');
+            const rows = tbody.querySelectorAll('tr');
+            const data = [];
+            rows.forEach(tr => {
+                const inputs = tr.querySelectorAll('input');
+                if (inputs.length >= 4) {
+                    data.push({
+                        time: inputs[0].value,
+                        loc: inputs[1].value,
+                        event: inputs[2].value,
+                        status: inputs[3].value
+                    });
+                }
+            });
+            return data;
+        }
+
+        // Check Quiz Logic
+        function checkQuiz() {
+            let score = 0;
+            for (let i = 1; i <= 5; i++) {
+                const select = document.getElementById(`q-opt-${i}`);
+                const badge = document.getElementById(`badge-${i}`);
+                const val = select.value;
+
+                if (!val) {
+                    badge.classList.add('hidden');
+                    continue;
+                }
+
+                badge.classList.remove('hidden');
+                if (val === quizAnswers[i].ans) {
+                    badge.textContent = "BENAR ✓";
+                    badge.className = "text-xs font-bold px-2 py-1 rounded bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300";
+                    score++;
+                } else {
+                    badge.textContent = "SALAH ✕";
+                    badge.className = "text-xs font-bold px-2 py-1 rounded bg-rose-100 text-rose-800 dark:bg-rose-950 dark:text-rose-300";
+                }
+            }
+
+            const scoreBadge = document.getElementById('quiz-score-badge');
+            const scoreVal = document.getElementById('score-val');
+            if (scoreBadge && scoreVal) {
+                scoreBadge.classList.remove('hidden');
+                scoreVal.textContent = score;
+            }
+        }
+
+        // Fill Sample Data Demo
+        function fillSampleData() {
+            document.getElementById('group-name').value = "Kelompok Alpha 01";
+            document.getElementById('group-class').value = "X PPLG 2";
+            document.getElementById('role-ketua').value = "Budi Santoso";
+            document.getElementById('role-pengamat').value = "Siti Rahma";
+            document.getElementById('role-analis').value = "Ahmad Dani";
+            document.getElementById('role-penulis').value = "Dian Sastro";
+            document.getElementById('role-presenter').value = "Eko Prasetyo";
+
+            document.getElementById('step1-problem').value = "Penumpukan sampah kantong plastik dan botol kemasan di area tempat duduk kantin sekolah.";
+            document.getElementById('step1-location').value = "Kantin Sekolah & Taman Samping Bangunan Gedung A";
+            document.getElementById('step1-urgency').value = "Sampah yang berserakan mengundang lalat, menciptakan aroma tidak sedap, dan mengganggu kenyamanan belajar saat kembali ke kelas.";
+
+            document.getElementById('decomp-1').value = "Volume & Jenis sampah dominan (kantong plastik sekali pakai & botol minuman kemasan)";
+            document.getElementById('decomp-2').value = "Waktu puncak penumpukan sampah (jam istirahat 1 dan jam istirahat 2)";
+            document.getElementById('decomp-3').value = "Kapasitas & letak tempat sampah yang ada di lokasi kantin";
+            document.getElementById('decomp-4').value = "Tingkat kesadaran & kebiasaan siswa dalam membuang sisa makanan";
+            document.getElementById('decomp-5').value = "Jadwal dan frekuensi pengangkutan sampah oleh petugas kebersihan";
+
+            document.getElementById('q1-when').value = "Sangat serentak terjadi 5-10 menit setelah bel istirahat berbunyi.";
+            document.getElementById('q2-where').value = "Terpusat di atas meja-meja makan kantin dan area taman terdekat.";
+            document.getElementById('q4-before').value = "Siswa beramai-ramai membeli makanan dan minuman kemasan secara bersamaan.";
+            document.getElementById('q5-after').value = "Siswa terburu-buru kembali ke kelas saat bel masuk berbunyi tanpa membawa sampah ke tempatnya.";
+            document.getElementById('q6-similarity').value = "Sampah selalu didominasi oleh bungkus jajanan plastik instan dari tenant makanan tertentu.";
+            document.getElementById('q7-who').value = "Siswa pembeli snack jajanan serta minimnya tempat sampah pemilahan di dekat meja makan.";
+
+            renderTableRows(defaultObservations);
+
+            document.getElementById('pattern-1').value = "Volume penumpukan sampah selalu melonjak drastis pada kurun waktu 10 menit setelah bel istirahat berbunyi.";
+            document.getElementById('pattern-2').value = "Semakin jauh posisi meja makan dari tempat sampah utama, semakin tinggi jumlah sampah yang ditinggalkan siswa.";
+            document.getElementById('pattern-3').value = "Jenis sampah plastik sekali pakai menyumbang lebih dari 80% dari total sampah yang ditinggalkan.";
+
+            document.getElementById('c-problem').value = "Penumpukan Sampah Plastic";
+            document.getElementById('c-condition').value = "Selesai jam istirahat sekolah";
+            document.getElementById('c-location').value = "Area Meja Kantin & Taman Sekolah";
+
+            document.getElementById('pattern-importance').value = "Pola ini sangat penting karena membuktikan bahwa masalah bukan terjadi secara acak seharian, melainkan ada jam puncak dan lokasi spesifik. Sehingga solusi cukup difokuskan pada waktu dan titik lokasi tersebut.";
+
+            // Fill Quiz
+            document.getElementById('q-opt-1').value = "POLA";
+            document.getElementById('q-exp-1').value = "Kejadian berulang secara rutin setiap jam istirahat sekolah.";
+            document.getElementById('q-opt-2').value = "BUKAN POLA";
+            document.getElementById('q-exp-2').value = "Hanya tindakan individu yang bersifat insidental dan acak hari ini.";
+            document.getElementById('q-opt-3').value = "POLA";
+            document.getElementById('q-exp-3').value = "Kondisi sebab-akibat yang selalu terjadi konsisten saat terjadi hujan deras.";
+            document.getElementById('q-opt-4').value = "BUKAN POLA";
+            document.getElementById('q-exp-4').value = "Kejadian perorangan dan tidak mencerminkan kecenderungan umum.";
+            document.getElementById('q-opt-5').value = "POLA";
+            document.getElementById('q-exp-5').value = "Terdapat keteraturan siklus hari di mana keterlambatan berulang setiap Senin.";
+
+            checkQuiz();
+
+            document.getElementById('sol-initial').value = "Mengadakan kerja bakti pembersihan lingkungan sekolah seminggu sekali pada hari Jumat.";
+            document.getElementById('sol-eval-reason').value = "Kerja bakti mingguan kurang efisien karena penumpukan sampah terjadi setiap hari di jam istirahat. Masalah butuh penanganan harian pada jam spesifik.";
+            document.getElementById('sol-improved').value = "1) Menempatkan tempat sampah kecil di setiap meja kantin; 2) Membentuk tim piket patroli siswa 5 menit sebelum istirahat usai; 3) Mengimbau kantin mengurangi kantong plastik sekali pakai.";
+
+            document.getElementById('ref-1').value = "Saya memahami bahwa pola membantu kita melihat kecenderungan berulang dari data pengamatan.";
+            document.getElementById('ref-2').value = "Dekomposisi memecah masalah menjadi bagian kecil, sedangkan Pengenalan Pola mencari keteraturan dari bagian-bagian tersebut.";
+            document.getElementById('ref-3').value = "Pola bahwa sampah selalu melonjak 10 menit setelah bel istirahat berbunyi di meja yang jauh dari bin sampah.";
+            document.getElementById('ref-4').value = "Pola membantu kami membuat solusi intervensi yang presisi di waktu dan tempat yang tepat.";
+
+            showToast("Contoh data LKPD berhasil diisikan!");
+        }
+
+        // Save Data to LocalStorage
+        function saveData() {
+            const formData = {
+                groupName: document.getElementById('group-name').value,
+                groupClass: document.getElementById('group-class').value,
+                groupDate: document.getElementById('group-date').value,
+                roles: {
+                    ketua: document.getElementById('role-ketua').value,
+                    pengamat: document.getElementById('role-pengamat').value,
+                    analis: document.getElementById('role-analis').value,
+                    penulis: document.getElementById('role-penulis').value,
+                    presenter: document.getElementById('role-presenter').value,
+                },
+                step1: {
+                    problem: document.getElementById('step1-problem').value,
+                    location: document.getElementById('step1-location').value,
+                    urgency: document.getElementById('step1-urgency').value,
+                },
+                step2: [
+                    document.getElementById('decomp-1').value,
+                    document.getElementById('decomp-2').value,
+                    document.getElementById('decomp-3').value,
+                    document.getElementById('decomp-4').value,
+                    document.getElementById('decomp-5').value,
+                ],
+                step3: {
+                    q1: document.getElementById('q1-when').value,
+                    q2: document.getElementById('q2-where').value,
+                    q3Radio: document.querySelector('input[name="q3-repeat"]:checked')?.value || "Ya",
+                    q3: document.getElementById('q3-explain').value,
+                    q4: document.getElementById('q4-before').value,
+                    q5: document.getElementById('q5-after').value,
+                    q6: document.getElementById('q6-similarity').value,
+                    q7: document.getElementById('q7-who').value,
+                },
+                tableData: getTableData(),
+                step5: {
+                    p1: document.getElementById('pattern-1').value,
+                    p2: document.getElementById('pattern-2').value,
+                    p3: document.getElementById('pattern-3').value,
+                },
+                step6: {
+                    cProb: document.getElementById('c-problem').value,
+                    cCond: document.getElementById('c-condition').value,
+                    cLoc: document.getElementById('c-location').value,
+                    importance: document.getElementById('pattern-importance').value,
+                },
+                quiz: {
+                    q1: document.getElementById('q-opt-1').value, q1e: document.getElementById('q-exp-1').value,
+                    q2: document.getElementById('q-opt-2').value, q2e: document.getElementById('q-exp-2').value,
+                    q3: document.getElementById('q-opt-3').value, q3e: document.getElementById('q-exp-3').value,
+                    q4: document.getElementById('q-opt-4').value, q4e: document.getElementById('q-exp-4').value,
+                    q5: document.getElementById('q-opt-5').value, q5e: document.getElementById('q-exp-5').value,
+                },
+                stepF: {
+                    initial: document.getElementById('sol-initial').value,
+                    evalRadio: document.querySelector('input[name="sol-eval"]:checked')?.value || "Ya",
+                    reason: document.getElementById('sol-eval-reason').value,
+                    improved: document.getElementById('sol-improved').value,
+                },
+                reflection: {
+                    r1: document.getElementById('ref-1').value,
+                    r2: document.getElementById('ref-2').value,
+                    r3: document.getElementById('ref-3').value,
+                    r4: document.getElementById('ref-4').value,
+                }
+            };
+
+            localStorage.setItem('ct_pola_lkpd_data', JSON.stringify(formData));
+            showToast("Kemajuan tugas berhasil disimpan di browser!");
+        }
+
+        // Load Saved Data
+        function loadSavedData() {
+            const raw = localStorage.getItem('ct_pola_lkpd_data');
+            if (!raw) {
+                renderTableRows(defaultObservations);
+                return;
+            }
+
+            try {
+                const data = JSON.parse(raw);
+                if (data.groupName) document.getElementById('group-name').value = data.groupName;
+                if (data.groupClass) document.getElementById('group-class').value = data.groupClass;
+                if (data.groupDate) document.getElementById('group-date').value = data.groupDate;
+
+                if (data.roles) {
+                    document.getElementById('role-ketua').value = data.roles.ketua || '';
+                    document.getElementById('role-pengamat').value = data.roles.pengamat || '';
+                    document.getElementById('role-analis').value = data.roles.analis || '';
+                    document.getElementById('role-penulis').value = data.roles.penulis || '';
+                    document.getElementById('role-presenter').value = data.roles.presenter || '';
+                }
+
+                if (data.step1) {
+                    document.getElementById('step1-problem').value = data.step1.problem || '';
+                    document.getElementById('step1-location').value = data.step1.location || '';
+                    document.getElementById('step1-urgency').value = data.step1.urgency || '';
+                }
+
+                if (data.step2) {
+                    for (let i = 0; i < 5; i++) {
+                        const el = document.getElementById(`decomp-${i+1}`);
+                        if (el && data.step2[i]) el.value = data.step2[i];
+                    }
+                }
+
+                if (data.step3) {
+                    document.getElementById('q1-when').value = data.step3.q1 || '';
+                    document.getElementById('q2-where').value = data.step3.q2 || '';
+                    document.getElementById('q3-explain').value = data.step3.q3 || '';
+                    document.getElementById('q4-before').value = data.step3.q4 || '';
+                    document.getElementById('q5-after').value = data.step3.q5 || '';
+                    document.getElementById('q6-similarity').value = data.step3.q6 || '';
+                    document.getElementById('q7-who').value = data.step3.q7 || '';
+                }
+
+                if (data.tableData && data.tableData.length > 0) {
+                    renderTableRows(data.tableData);
+                } else {
+                    renderTableRows(defaultObservations);
+                }
+
+                if (data.step5) {
+                    document.getElementById('pattern-1').value = data.step5.p1 || '';
+                    document.getElementById('pattern-2').value = data.step5.p2 || '';
+                    document.getElementById('pattern-3').value = data.step5.p3 || '';
+                }
+
+                if (data.step6) {
+                    document.getElementById('c-problem').value = data.step6.cProb || '';
+                    document.getElementById('c-condition').value = data.step6.cCond || '';
+                    document.getElementById('c-location').value = data.step6.cLoc || '';
+                    document.getElementById('pattern-importance').value = data.step6.importance || '';
+                }
+
+                if (data.quiz) {
+                    if (data.quiz.q1) document.getElementById('q-opt-1').value = data.quiz.q1;
+                    if (data.quiz.q1e) document.getElementById('q-exp-1').value = data.quiz.q1e;
+                    if (data.quiz.q2) document.getElementById('q-opt-2').value = data.quiz.q2;
+                    if (data.quiz.q2e) document.getElementById('q-exp-2').value = data.quiz.q2e;
+                    if (data.quiz.q3) document.getElementById('q-opt-3').value = data.quiz.q3;
+                    if (data.quiz.q3e) document.getElementById('q-exp-3').value = data.quiz.q3e;
+                    if (data.quiz.q4) document.getElementById('q-opt-4').value = data.quiz.q4;
+                    if (data.quiz.q4e) document.getElementById('q-exp-4').value = data.quiz.q4e;
+                    if (data.quiz.q5) document.getElementById('q-opt-5').value = data.quiz.q5;
+                    if (data.quiz.q5e) document.getElementById('q-exp-5').value = data.quiz.q5e;
+                }
+
+                if (data.stepF) {
+                    document.getElementById('sol-initial').value = data.stepF.initial || '';
+                    document.getElementById('sol-eval-reason').value = data.stepF.reason || '';
+                    document.getElementById('sol-improved').value = data.stepF.improved || '';
+                }
+
+                if (data.reflection) {
+                    document.getElementById('ref-1').value = data.reflection.r1 || '';
+                    document.getElementById('ref-2').value = data.reflection.r2 || '';
+                    document.getElementById('ref-3').value = data.reflection.r3 || '';
+                    document.getElementById('ref-4').value = data.reflection.r4 || '';
+                }
+            } catch (e) {
+                console.error("Gagal memuat data:", e);
+                renderTableRows(defaultObservations);
+            }
+        }
+
+        // Helper Toast Notification
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            const msg = document.getElementById('toast-msg');
+            msg.textContent = message;
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+            
+            setTimeout(() => {
+                toast.classList.remove('translate-y-0', 'opacity-100');
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
+        }
+
+        // HTML Escape Helper
+        function escapeHtml(str) {
+            if (!str) return '';
+            return str
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+    </script>
+</body>
+</html>
