@@ -1,0 +1,1101 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panduan Dasar Sinematografi & Pembuatan Video</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts & Font Awesome -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Plus Jakarta Sans', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              50: '#fff7ed',
+              500: '#f97316',
+              600: '#ea580c',
+              700: '#c2410c',
+              900: '#7c2d12',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* Custom viewfinder grid lines */
+    .grid-thirds-overlay {
+      background-size: 33.333% 33.333%;
+      background-image: 
+        linear-gradient(to right, rgba(255, 255, 255, 0.4) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.4) 1px, transparent 1px);
+    }
+    .intersection-dot {
+      animation: pulse-glow 2s infinite alternate;
+    }
+    @keyframes pulse-glow {
+      0% { transform: scale(1); opacity: 0.7; }
+      100% { transform: scale(1.4); opacity: 1; }
+    }
+    .cam-rec-dot {
+      animation: blink 1s infinite;
+    }
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.2; }
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 font-sans antialiased selection:bg-brand-500 selection:text-white min-h-screen">
+
+  <!-- Navigation Header -->
+  <header class="sticky top-0 z-50 bg-slate-950/80 backdrop-blur-md border-b border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 to-amber-500 flex items-center justify-center text-white font-bold shadow-lg shadow-brand-500/20">
+          <i class="fa-solid font-black fa-video"></i>
+        </div>
+        <div>
+          <span class="font-bold text-lg text-white tracking-wide block leading-none">CineBasic</span>
+          <span class="text-xs text-slate-400">Panduan Video Siswa</span>
+        </div>
+      </div>
+      
+      <!-- Desktop Nav -->
+      <nav class="hidden md:flex items-center space-x-1 text-sm font-medium">
+        <a href="#framing" class="px-3 py-2 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800/60 transition">1. Framing</a>
+        <a href="#angle" class="px-3 py-2 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800/60 transition">2. Angle</a>
+        <a href="#komposisi" class="px-3 py-2 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800/60 transition">3. Komposisi</a>
+        <a href="#pencahayaan" class="px-3 py-2 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800/60 transition">4. Pencahayaan</a>
+        <a href="#audio" class="px-3 py-2 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800/60 transition">5. Audio</a>
+      </nav>
+
+      <a href="#studi-kasus" class="hidden sm:inline-flex items-center justify-center px-4 py-2 rounded-xl text-xs font-semibold bg-brand-600 hover:bg-brand-500 text-white transition shadow-lg shadow-brand-600/30">
+        <i class="fa-solid fa-lightbulb mr-2"></i> Contoh Proyek
+      </a>
+    </div>
+  </header>
+
+  <!-- Hero Banner -->
+  <section class="relative overflow-hidden pt-12 pb-16 md:pt-20 md:pb-24 border-b border-slate-800/80 bg-gradient-to-b from-slate-900 to-slate-950">
+    <div class="absolute -top-24 -right-24 w-96 h-96 bg-brand-500/10 rounded-full blur-3xl pointer-events-none"></div>
+    <div class="absolute top-1/2 -left-24 w-80 h-80 bg-blue-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+      <div class="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-slate-800/80 border border-slate-700/80 text-brand-500 text-xs font-semibold mb-6 shadow-inner">
+        <span class="w-2 h-2 rounded-full bg-red-500 cam-rec-dot"></span>
+        <span>MODUL PEMBELAJARAN VIDEO CREATION</span>
+      </div>
+
+      <h1 class="text-3xl sm:text-5xl md:text-6xl font-extrabold text-white tracking-tight leading-tight">
+        Panduan Dasar Teknik <br class="hidden sm:inline">
+        <span class="bg-clip-text text-transparent bg-gradient-to-r from-brand-500 via-amber-400 to-yellow-200">
+          Pengambilan Gambar & Video
+        </span>
+      </h1>
+
+      <p class="mt-6 text-slate-300 text-base sm:text-lg max-w-3xl mx-auto font-normal leading-relaxed">
+        Pelajari 5 fondasi utama untuk menghasilkan video yang rapi, informatif, dan nyaman ditonton menggunakan kamera ponsel maupun kamera profesional.
+      </p>
+
+      <!-- Quick Concept Badges -->
+      <div class="mt-10 grid grid-cols-2 sm:grid-cols-5 gap-3 max-w-4xl mx-auto">
+        <a href="#framing" class="p-3 rounded-2xl bg-slate-900/90 border border-slate-800 hover:border-brand-500/50 hover:bg-slate-800/80 transition text-center group">
+          <div class="w-9 h-9 rounded-xl bg-brand-500/10 text-brand-500 flex items-center justify-center mx-auto mb-2 group-hover:scale-110 transition">
+            <i class="fa-solid fa-crop-simple"></i>
+          </div>
+          <div class="text-xs font-bold text-white">1. Framing</div>
+          <div class="text-[10px] text-slate-400">Ukuran Gambar</div>
+        </a>
+
+        <a href="#angle" class="p-3 rounded-2xl bg-slate-900/90 border border-slate-800 hover:border-brand-500/50 hover:bg-slate-800/80 transition text-center group">
+          <div class="w-9 h-9 rounded-xl bg-blue-500/10 text-blue-400 flex items-center justify-center mx-auto mb-2 group-hover:scale-110 transition">
+            <i class="fa-solid fa-camera-rotate"></i>
+          </div>
+          <div class="text-xs font-bold text-white">2. Angle</div>
+          <div class="text-[10px] text-slate-400">Sudut Kamera</div>
+        </a>
+
+        <a href="#komposisi" class="p-3 rounded-2xl bg-slate-900/90 border border-slate-800 hover:border-brand-500/50 hover:bg-slate-800/80 transition text-center group">
+          <div class="w-9 h-9 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center mx-auto mb-2 group-hover:scale-110 transition">
+            <i class="fa-solid fa-border-all"></i>
+          </div>
+          <div class="text-xs font-bold text-white">3. Komposisi</div>
+          <div class="text-[10px] text-slate-400">Rule of Thirds</div>
+        </a>
+
+        <a href="#pencahayaan" class="p-3 rounded-2xl bg-slate-900/90 border border-slate-800 hover:border-brand-500/50 hover:bg-slate-800/80 transition text-center group">
+          <div class="w-9 h-9 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center mx-auto mb-2 group-hover:scale-110 transition">
+            <i class="fa-solid fa-sun"></i>
+          </div>
+          <div class="text-xs font-bold text-white">4. Cahaya</div>
+          <div class="text-[10px] text-slate-400">Pencahayaan</div>
+        </a>
+
+        <a href="#audio" class="p-3 rounded-2xl bg-slate-900/90 border border-slate-800 hover:border-brand-500/50 hover:bg-slate-800/80 transition text-center group col-span-2 sm:col-span-1">
+          <div class="w-9 h-9 rounded-xl bg-purple-500/10 text-purple-400 flex items-center justify-center mx-auto mb-2 group-hover:scale-110 transition">
+            <i class="fa-solid fa-microphone-lines"></i>
+          </div>
+          <div class="text-xs font-bold text-white">5. Audio</div>
+          <div class="text-[10px] text-slate-400">Kualitas Suara</div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- MAIN CONTENT CONTAINER -->
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-20">
+
+    <!-- SECTION 1: FRAMING -->
+    <section id="framing" class="scroll-mt-24">
+      <div class="flex items-center space-x-3 mb-6">
+        <span class="flex items-center justify-center w-8 h-8 rounded-full bg-brand-500 text-white font-bold text-sm">1</span>
+        <h2 class="text-2xl sm:text-3xl font-bold text-white tracking-tight">Framing (Bingkai Gambar)</h2>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <!-- Left Explanation -->
+        <div class="lg:col-span-5 space-y-4">
+          <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-6">
+            <p class="text-slate-300 text-base leading-relaxed">
+              <strong class="text-white">Framing</strong> adalah cara menempatkan dan mengatur posisi objek di dalam bidang atau bingkai layar kamera.
+            </p>
+            <div class="mt-4 pt-4 border-t border-slate-800/80">
+              <span class="text-xs font-bold text-brand-500 uppercase tracking-wider block mb-2">3 Jenis Framing Utama:</span>
+              <ul class="space-y-3 text-sm text-slate-300">
+                <li class="flex items-start">
+                  <i class="fa-solid fa-mountain text-brand-500 mt-1 mr-3 shrink-0"></i>
+                  <div>
+                    <strong class="text-white">Long Shot (LS):</strong>
+                    <p class="text-xs text-slate-400">Memperlihatkan objek beserta lingkungan sekitarnya secara luas.</p>
+                  </div>
+                </li>
+                <li class="flex items-start">
+                  <i class="fa-solid fa-user text-brand-500 mt-1 mr-3 shrink-0"></i>
+                  <div>
+                    <strong class="text-white">Medium Shot (MS):</strong>
+                    <p class="text-xs text-slate-400">Memperlihatkan objek dari jarak sedang (biasanya pinggang ke atas).</p>
+                  </div>
+                </li>
+                <li class="flex items-start">
+                  <i class="fa-solid fa-face-smile text-brand-500 mt-1 mr-3 shrink-0"></i>
+                  <div>
+                    <strong class="text-white">Close-up (CU):</strong>
+                    <p class="text-xs text-slate-400">Menonjolkan ekspresi wajah atau detail khusus objek.</p>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Interactive Case Study Highlight -->
+          <div id="studi-kasus" class="bg-gradient-to-br from-slate-900 to-slate-950 border border-brand-500/30 rounded-2xl p-6 relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-24 h-24 bg-brand-500/10 rounded-full blur-xl"></div>
+            <div class="flex items-center space-x-2 text-brand-400 text-xs font-bold uppercase tracking-wider mb-2">
+              <i class="fa-solid fa-school"></i>
+              <span>Contoh Proyek Siswa</span>
+            </div>
+            <h3 class="text-lg font-bold text-white mb-2">Video Tema: "Kebersihan Sekolah"</h3>
+            <p class="text-xs text-slate-300 leading-relaxed">
+              Penerapan ketiga jenis framing dalam satu jalan cerita video pendek:
+            </p>
+            <div class="mt-3 space-y-2">
+              <button onclick="setFramingTab('long')" class="w-full text-left p-2.5 rounded-xl bg-slate-800/50 hover:bg-slate-800 border border-slate-700/60 transition flex items-center justify-between group">
+                <span class="text-xs font-semibold text-slate-200">1. Long Shot &rarr; Kondisi kelas luas</span>
+                <i class="fa-solid fa-eye text-brand-500 text-xs opacity-0 group-hover:opacity-100 transition"></i>
+              </button>
+              <button onclick="setFramingTab('medium')" class="w-full text-left p-2.5 rounded-xl bg-slate-800/50 hover:bg-slate-800 border border-slate-700/60 transition flex items-center justify-between group">
+                <span class="text-xs font-semibold text-slate-200">2. Medium Shot &rarr; Siswa membersihkan kelas</span>
+                <i class="fa-solid fa-eye text-brand-500 text-xs opacity-0 group-hover:opacity-100 transition"></i>
+              </button>
+              <button onclick="setFramingTab('close')" class="w-full text-left p-2.5 rounded-xl bg-slate-800/50 hover:bg-slate-800 border border-slate-700/60 transition flex items-center justify-between group">
+                <span class="text-xs font-semibold text-slate-200">3. Close-up &rarr; Sampah yang dikumpulkan</span>
+                <i class="fa-solid fa-eye text-brand-500 text-xs opacity-0 group-hover:opacity-100 transition"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Interactive Viewfinder Simulator -->
+        <div class="lg:col-span-7 bg-slate-900 border border-slate-800 rounded-3xl p-5 shadow-2xl">
+          <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center space-x-2">
+              <span class="w-3 h-3 rounded-full bg-red-500"></span>
+              <span class="w-3 h-3 rounded-full bg-yellow-500"></span>
+              <span class="w-3 h-3 rounded-full bg-green-500"></span>
+              <span class="text-xs font-mono text-slate-400 ml-2">SIMULATOR_VIEWFINDER.REC</span>
+            </div>
+            <!-- Framing Selector Tabs -->
+            <div class="flex bg-slate-950 p-1 rounded-xl border border-slate-800">
+              <button id="btn-long" onclick="setFramingTab('long')" class="px-3 py-1 rounded-lg text-xs font-semibold text-white bg-brand-600 transition">Long Shot</button>
+              <button id="btn-medium" onclick="setFramingTab('medium')" class="px-3 py-1 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition">Medium Shot</button>
+              <button id="btn-close" onclick="setFramingTab('close')" class="px-3 py-1 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition">Close-up</button>
+            </div>
+          </div>
+
+          <!-- Dynamic Camera Viewport -->
+          <div class="relative w-full aspect-video rounded-2xl bg-slate-950 border-2 border-slate-800 overflow-hidden flex items-center justify-center transition-all duration-500">
+            <!-- HUD Camera Overlays -->
+            <div class="absolute top-4 left-4 text-[10px] font-mono text-red-400 flex items-center space-x-1 z-20 bg-black/60 px-2 py-1 rounded">
+              <span class="w-2 h-2 rounded-full bg-red-500 cam-rec-dot"></span>
+              <span>REC 00:01:24 [4K 60FPS]</span>
+            </div>
+            <div class="absolute top-4 right-4 text-[10px] font-mono text-slate-400 bg-black/60 px-2 py-1 rounded z-20">
+              ISO 400 | RAW
+            </div>
+            <div class="absolute bottom-4 left-4 text-[10px] font-mono text-slate-400 bg-black/60 px-2 py-1 rounded z-20">
+              <i class="fa-solid fa-battery-three-quarters text-emerald-400 mr-1"></i> 78%
+            </div>
+
+            <!-- Viewfinder Corner Markers -->
+            <div class="absolute top-3 left-3 w-6 h-6 border-t-2 border-l-2 border-slate-400/60 z-20"></div>
+            <div class="absolute top-3 right-3 w-6 h-6 border-t-2 border-r-2 border-slate-400/60 z-20"></div>
+            <div class="absolute bottom-3 left-3 w-6 h-6 border-b-2 border-l-2 border-slate-400/60 z-20"></div>
+            <div class="absolute bottom-3 right-3 w-6 h-6 border-b-2 border-r-2 border-slate-400/60 z-20"></div>
+
+            <!-- Frame View Content (DYNAMIC) -->
+            <div id="framing-viewport-content" class="w-full h-full relative transition-all duration-500">
+              <!-- Content rendered via JavaScript -->
+            </div>
+          </div>
+
+          <!-- Description Footer -->
+          <div class="mt-4 p-4 rounded-xl bg-slate-950/70 border border-slate-800/80 flex items-start space-x-3">
+            <div class="p-2 rounded-lg bg-brand-500/10 text-brand-500 shrink-0">
+              <i class="fa-solid fa-circle-info text-sm"></i>
+            </div>
+            <div>
+              <h4 id="framing-title" class="text-sm font-bold text-white">Long Shot (Kondisi Kelas)</h4>
+              <p id="framing-desc" class="text-xs text-slate-300 mt-1">
+                Menampilkan seluruh ruangan kelas beserta bangku, papan tulis, dan beberapa siswa. Penonton mendapatkan gambaran awal lingkungan secara utuh.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 2: ANGLE -->
+    <section id="angle" class="scroll-mt-24 pt-8 border-t border-slate-800/80">
+      <div class="flex items-center space-x-3 mb-6">
+        <span class="flex items-center justify-center w-8 h-8 rounded-full bg-blue-500 text-white font-bold text-sm">2</span>
+        <h2 class="text-2xl sm:text-3xl font-bold text-white tracking-tight">Angle (Sudut Pandang Kamera)</h2>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+        <!-- Interactive Angle Visualizer -->
+        <div class="lg:col-span-7 bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl">
+          <div class="text-xs font-semibold text-slate-400 mb-4 flex items-center justify-between">
+            <span><i class="fa-solid fa-sliders text-blue-400 mr-2"></i>PILIH TINGKAT KETINGGIAN KAMERA</span>
+            <span class="text-blue-400 font-mono" id="angle-degrees-text">0° Eye Level</span>
+          </div>
+
+          <!-- Angle Selector Switcher -->
+          <div class="grid grid-cols-3 gap-2 mb-6">
+            <button onclick="setAngle('high')" id="angle-btn-high" class="py-2.5 px-3 rounded-xl border border-slate-800 bg-slate-950 text-slate-300 text-xs font-semibold hover:border-blue-500/50 transition text-center flex flex-col items-center">
+              <i class="fa-solid fa-arrow-down-long text-blue-400 mb-1"></i>
+              <span>High Angle</span>
+            </button>
+            <button onclick="setAngle('eye')" id="angle-btn-eye" class="py-2.5 px-3 rounded-xl border-2 border-blue-500 bg-blue-500/10 text-white text-xs font-semibold transition text-center flex flex-col items-center">
+              <i class="fa-solid fa-arrows-left-right text-blue-400 mb-1"></i>
+              <span>Eye Level</span>
+            </button>
+            <button onclick="setAngle('low')" id="angle-btn-low" class="py-2.5 px-3 rounded-xl border border-slate-800 bg-slate-950 text-slate-300 text-xs font-semibold hover:border-blue-500/50 transition text-center flex flex-col items-center">
+              <i class="fa-solid fa-arrow-up-long text-blue-400 mb-1"></i>
+              <span>Low Angle</span>
+            </button>
+          </div>
+
+          <!-- Interactive Angle Graphic Canvas Area -->
+          <div class="relative w-full h-64 bg-slate-950 rounded-2xl border border-slate-800 overflow-hidden flex items-center justify-center p-4">
+            <!-- Simulated Camera Rig -->
+            <div id="angle-camera-rig" class="absolute left-8 transition-all duration-500 flex items-center space-x-2">
+              <div class="px-2.5 py-1 rounded bg-blue-600 text-white font-mono text-[10px] font-bold shadow-lg shadow-blue-500/30 flex items-center space-x-1">
+                <i class="fa-solid fa-video text-xs"></i>
+                <span id="angle-label-tag">EYE LEVEL</span>
+              </div>
+              <div class="w-12 h-0.5 bg-gradient-to-r from-blue-500/80 to-transparent"></div>
+            </div>
+
+            <!-- Character / Subject Center Graphic -->
+            <div class="relative flex flex-col items-center justify-center transition-transform duration-500" id="angle-subject">
+              <!-- Head & Body Icon -->
+              <div class="w-20 h-20 rounded-full bg-slate-800 border-2 border-slate-700 flex items-center justify-center text-slate-200 text-3xl shadow-2xl relative">
+                <i class="fa-solid fa-user-graduate"></i>
+              </div>
+              <span class="text-[10px] text-slate-400 font-mono mt-2 bg-slate-900/80 px-2 py-0.5 rounded">Objek Utama</span>
+            </div>
+          </div>
+
+          <!-- Dynamic Info Card -->
+          <div class="mt-4 p-4 rounded-xl bg-slate-950 border border-slate-800 text-xs space-y-1">
+            <span class="text-blue-400 font-bold block" id="angle-card-title">Eye Level (Sejajar Mata)</span>
+            <p class="text-slate-300 leading-relaxed" id="angle-card-desc">
+              Kamera diletakkan sejajar dengan mata objek. Memberikan kesan alami, jujur, dan santai seperti pandangan sehari-hari.
+            </p>
+          </div>
+        </div>
+
+        <!-- Right Rules & Tip Box -->
+        <div class="lg:col-span-5 space-y-4">
+          <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-6">
+            <h3 class="text-base font-bold text-white mb-3 flex items-center">
+              <i class="fa-solid fa-camera text-blue-400 mr-2"></i>
+              3 Sudut Utama Kamera
+            </h3>
+            <div class="space-y-4 text-xs">
+              <div class="p-3 rounded-xl bg-slate-950 border border-slate-800/80">
+                <span class="font-bold text-white text-sm block mb-0.5">1. Eye Level</span>
+                <p class="text-slate-300">Kamera sejajar dengan posisi mata objek. Netral dan paling umum digunakan.</p>
+              </div>
+              <div class="p-3 rounded-xl bg-slate-950 border border-slate-800/80">
+                <span class="font-bold text-white text-sm block mb-0.5">2. High Angle</span>
+                <p class="text-slate-300">Kamera berada lebih tinggi dari objek (menghadap ke bawah). Membuat objek terlihat lebih kecil/rendah.</p>
+              </div>
+              <div class="p-3 rounded-xl bg-slate-950 border border-slate-800/80">
+                <span class="font-bold text-white text-sm block mb-0.5">3. Low Angle</span>
+                <p class="text-slate-300">Kamera berada lebih rendah dari objek (menghadap ke atas). Memberikan kesan megah, tinggi, atau kuat.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Highlighted Pro Tip -->
+          <div class="bg-blue-950/40 border border-blue-500/30 rounded-2xl p-5 flex items-start space-x-3">
+            <div class="p-2 rounded-xl bg-blue-500/20 text-blue-400 shrink-0">
+              <i class="fa-solid fa-circle-check text-base"></i>
+            </div>
+            <div>
+              <h4 class="text-xs font-bold text-blue-300 uppercase tracking-wider">Prinsip Proyek Siswa</h4>
+              <p class="text-xs text-slate-300 mt-1 leading-relaxed font-medium">
+                "Tidak perlu menggunakan angle yang rumit. Pilih angle sederhana yang paling mampu mendukung pesan video Anda."
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 3: KOMPOSISI -->
+    <section id="komposisi" class="scroll-mt-24 pt-8 border-t border-slate-800/80">
+      <div class="flex items-center space-x-3 mb-6">
+        <span class="flex items-center justify-center w-8 h-8 rounded-full bg-emerald-500 text-white font-bold text-sm">3</span>
+        <h2 class="text-2xl sm:text-3xl font-bold text-white tracking-tight">Komposisi (Rule of Thirds)</h2>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <!-- Left Text Explanation -->
+        <div class="lg:col-span-5 space-y-4">
+          <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-6">
+            <p class="text-slate-300 text-sm leading-relaxed mb-4">
+              Komposisi adalah susunan visual objek dalam layar. Salah satu prinsip paling sederhana dan efektif adalah <strong class="text-white">Rule of Thirds (Aturan Sepertiga)</strong>.
+            </p>
+
+            <div class="p-4 rounded-xl bg-slate-950 border border-slate-800 space-y-2">
+              <span class="text-xs font-bold text-emerald-400 uppercase tracking-wider block">Konsep Rule of Thirds:</span>
+              <p class="text-xs text-slate-300 leading-relaxed">
+                Bayangkan layar HP atau kamera Anda dibagi menjadi <strong class="text-white">9 bagian sama besar</strong> menggunakan 2 garis horizontal dan 2 garis vertikal.
+              </p>
+            </div>
+
+            <div class="mt-4 space-y-2 text-xs text-slate-300">
+              <div class="flex items-start space-x-2">
+                <i class="fa-solid fa-circle-dot text-emerald-400 mt-0.5"></i>
+                <span><strong class="text-white">Titik Perpotongan:</strong> Tempatkan objek utama pada garis atau perpotongan garis tersebut.</span>
+              </div>
+              <div class="flex items-start space-x-2">
+                <i class="fa-solid fa-circle-dot text-emerald-400 mt-0.5"></i>
+                <span><strong class="text-white">Keseimbangan Visual:</strong> Membuat hasil video tidak selalu monoton berada tepat di tengah frame.</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- ASCII Grid Representation display -->
+          <div class="bg-slate-950 border border-slate-800 rounded-2xl p-4 font-mono text-[11px] text-emerald-400/90 leading-tight">
+            <span class="text-[10px] text-slate-500 block mb-2">// Skema Garis 3x3</span>
+            <pre class="text-center text-slate-300">
+┌─────┬─────┬─────┐
+│     │  •  │  •  │
+├─────┼─────┼─────┤
+│     │  •  │  •  │
+└─────┴─────┴─────┘
+            </pre>
+            <span class="text-[10px] text-slate-400 block text-center mt-2 font-sans">• = Titik Fokus Posisi Objek</span>
+          </div>
+        </div>
+
+        <!-- Right Interactive Rule of Thirds Canvas -->
+        <div class="lg:col-span-7 bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl">
+          <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+            <span class="text-xs font-semibold text-slate-300">
+              <i class="fa-solid fa-hand-pointer text-emerald-400 mr-1.5"></i> Interaktif: Geser Objek ke Titik Perpotongan
+            </span>
+            <div class="flex items-center space-x-2">
+              <button onclick="toggleGridLines()" id="btn-toggle-grid" class="px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold transition">
+                <i class="fa-solid fa-border-all mr-1"></i> Toggle Grid
+              </button>
+              <button onclick="resetSubjectPos()" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold transition">
+                Reset
+              </button>
+            </div>
+          </div>
+
+          <!-- Interactive Viewport Canvas -->
+          <div id="rot-container" class="relative w-full aspect-video bg-slate-950 rounded-2xl border-2 border-slate-800 overflow-hidden select-none">
+            <!-- Simulated Background Scene -->
+            <div class="absolute inset-0 bg-gradient-to-tr from-slate-950 via-slate-900 to-indigo-950/40"></div>
+            <div class="absolute bottom-0 inset-x-0 h-16 bg-slate-900/60 border-t border-slate-800/60"></div>
+            
+            <!-- Grid Lines Layer -->
+            <div id="rot-grid-overlay" class="absolute inset-0 grid grid-cols-3 grid-rows-3 pointer-events-none transition-opacity duration-300">
+              <!-- 9 Grid Cells -->
+              <div class="border-r border-b border-emerald-400/30 relative"></div>
+              <div class="border-r border-b border-emerald-400/30 relative">
+                <div class="absolute bottom-0 right-0 w-3 h-3 -mb-1.5 -mr-1.5 rounded-full bg-emerald-400/80 intersection-dot shadow-lg shadow-emerald-400"></div>
+              </div>
+              <div class="border-b border-emerald-400/30 relative">
+                <div class="absolute bottom-0 left-0 w-3 h-3 -mb-1.5 -ml-1.5 rounded-full bg-emerald-400/80 intersection-dot shadow-lg shadow-emerald-400"></div>
+              </div>
+
+              <div class="border-r border-b border-emerald-400/30 relative"></div>
+              <div class="border-r border-b border-emerald-400/30 relative">
+                <div class="absolute bottom-0 right-0 w-3 h-3 -mb-1.5 -mr-1.5 rounded-full bg-emerald-400/80 intersection-dot shadow-lg shadow-emerald-400"></div>
+              </div>
+              <div class="border-b border-emerald-400/30 relative">
+                <div class="absolute bottom-0 left-0 w-3 h-3 -mb-1.5 -ml-1.5 rounded-full bg-emerald-400/80 intersection-dot shadow-lg shadow-emerald-400"></div>
+              </div>
+
+              <div class="border-r border-emerald-400/30"></div>
+              <div class="border-r border-emerald-400/30"></div>
+              <div></div>
+            </div>
+
+            <!-- Draggable Subject -->
+            <div id="draggable-subject" class="absolute cursor-grab active:cursor-grabbing transform -translate-x-1/2 -translate-y-1/2 z-30 transition-shadow">
+              <div class="flex flex-col items-center">
+                <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-emerald-500 to-teal-400 text-slate-950 font-extrabold flex items-center justify-center text-xl shadow-2xl border-2 border-white/80">
+                  <i class="fa-solid fa-person-circle-check"></i>
+                </div>
+                <span class="text-[10px] font-bold text-white bg-slate-900/90 border border-slate-700 px-2 py-0.5 rounded-full mt-1">
+                  Objek
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Presets -->
+          <div class="mt-4 flex items-center justify-between text-xs">
+            <span class="text-slate-400">Pilih Posisi Cepat:</span>
+            <div class="flex space-x-2">
+              <button onclick="setSubjectPreset('center')" class="px-2.5 py-1 rounded-lg bg-slate-800 text-slate-300 hover:text-white hover:bg-slate-700">Tengah (Biasa)</button>
+              <button onclick="setSubjectPreset('rot-top-right')" class="px-2.5 py-1 rounded-lg bg-emerald-950 border border-emerald-500/50 text-emerald-300 hover:bg-emerald-900">Perpotongan Kanan Atas</button>
+              <button onclick="setSubjectPreset('rot-bottom-left')" class="px-2.5 py-1 rounded-lg bg-emerald-950 border border-emerald-500/50 text-emerald-300 hover:bg-emerald-900">Perpotongan Kiri Bawah</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 4: PENCAHAYAAN -->
+    <section id="pencahayaan" class="scroll-mt-24 pt-8 border-t border-slate-800/80">
+      <div class="flex items-center space-x-3 mb-6">
+        <span class="flex items-center justify-center w-8 h-8 rounded-full bg-amber-500 text-white font-bold text-sm">4</span>
+        <h2 class="text-2xl sm:text-3xl font-bold text-white tracking-tight">Pencahayaan (Lighting)</h2>
+      </div>
+
+      <!-- Before & After Comparison Interactive -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+        <!-- Interactive Lighting Setup Box -->
+        <div class="lg:col-span-7 bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl">
+          <div class="flex items-center justify-between mb-4">
+            <span class="text-xs font-semibold text-slate-300">
+              <i class="fa-solid fa-lightbulb text-amber-400 mr-2"></i> Simulasi Arah Cahaya
+            </span>
+            <div class="flex bg-slate-950 p-1 rounded-xl border border-slate-800">
+              <button id="btn-light-good" onclick="setLightingMode('good')" class="px-3 py-1 rounded-lg text-xs font-semibold text-white bg-amber-600 transition">Posisi Benar</button>
+              <button id="btn-light-bad" onclick="setLightingMode('bad')" class="px-3 py-1 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition">Backlight (Salah)</button>
+            </div>
+          </div>
+
+          <!-- Interactive Viewport -->
+          <div class="relative w-full aspect-video rounded-2xl bg-slate-950 border-2 border-slate-800 overflow-hidden flex items-center justify-center transition-all duration-500">
+            <!-- Lighting Visual Display Area -->
+            <div id="lighting-scene" class="w-full h-full relative flex items-center justify-center transition-all duration-500">
+              <!-- Rendered dynamically -->
+            </div>
+          </div>
+
+          <div class="mt-4 p-4 rounded-xl bg-slate-950 border border-slate-800 text-xs">
+            <div id="lighting-status-badge" class="inline-block px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 font-bold mb-2">
+              ✓ Pencahayaan Optimal
+            </div>
+            <p id="lighting-status-desc" class="text-slate-300 leading-relaxed">
+              Sumber cahaya berada di belakang kamera menerangi wajah objek secara langsung. Objek terlihat terang, jelas, dan tajam.
+            </p>
+          </div>
+        </div>
+
+        <!-- Right 4 Key Lighting Principles Cards -->
+        <div class="lg:col-span-5 space-y-3">
+          <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-5 space-y-3">
+            <h3 class="text-sm font-bold text-white uppercase tracking-wider mb-2 flex items-center">
+              <i class="fa-solid fa-sun text-amber-400 mr-2"></i> 4 Aturan Penting Pencahayaan
+            </h3>
+
+            <div class="p-3 rounded-xl bg-slate-950 border border-slate-800/80 flex items-start space-x-3">
+              <span class="w-6 h-6 rounded-lg bg-amber-500/20 text-amber-400 flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">1</span>
+              <div>
+                <strong class="text-xs text-white block">Objek Harus Terlihat Jelas</strong>
+                <p class="text-[11px] text-slate-400 mt-0.5">Pastikan wajah atau detail utama objek mendapatkan sinar yang cukup.</p>
+              </div>
+            </div>
+
+            <div class="p-3 rounded-xl bg-slate-950 border border-slate-800/80 flex items-start space-x-3">
+              <span class="w-6 h-6 rounded-lg bg-amber-500/20 text-amber-400 flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">2</span>
+              <div>
+                <strong class="text-xs text-white block">Hindari Membelakangi Sinar Kuat</strong>
+                <p class="text-[11px] text-slate-400 mt-0.5">Jangan menempatkan objek membelakangi jendela terang atau matahari (Backlight).</p>
+              </div>
+            </div>
+
+            <div class="p-3 rounded-xl bg-slate-950 border border-slate-800/80 flex items-start space-x-3">
+              <span class="w-6 h-6 rounded-lg bg-amber-500/20 text-amber-400 flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">3</span>
+              <div>
+                <strong class="text-xs text-white block">Manfaatkan Cahaya Alami</strong>
+                <p class="text-[11px] text-slate-400 mt-0.5">Sinar matahari pagi/sore atau jendela ruang kelas adalah sumber cahaya gratis terbaik.</p>
+              </div>
+            </div>
+
+            <div class="p-3 rounded-xl bg-slate-950 border border-slate-800/80 flex items-start space-x-3">
+              <span class="w-6 h-6 rounded-lg bg-amber-500/20 text-amber-400 flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">4</span>
+              <div>
+                <strong class="text-xs text-white block">Jangan Menutup Sumber Cahaya</strong>
+                <p class="text-[11px] text-slate-400 mt-0.5">Tubuh juru kamera tidak boleh menghalangi sorot lampu/cahaya ke arah objek.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bottom Summary Banner -->
+          <div class="p-4 rounded-xl bg-amber-950/30 border border-amber-500/30 text-xs text-amber-200">
+            <strong>Prinsip Utama:</strong> "Objek terlihat jelas lebih penting daripada efek pencahayaan yang rumit."
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 5: AUDIO -->
+    <section id="audio" class="scroll-mt-24 pt-8 border-t border-slate-800/80">
+      <div class="flex items-center space-x-3 mb-6">
+        <span class="flex items-center justify-center w-8 h-8 rounded-full bg-purple-500 text-white font-bold text-sm">5</span>
+        <h2 class="text-2xl sm:text-3xl font-bold text-white tracking-tight">Kualitas Audio (Suara)</h2>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+        <!-- Left Banner Note -->
+        <div class="lg:col-span-5 space-y-4">
+          <div class="bg-gradient-to-br from-purple-950/40 to-slate-900 border border-purple-500/30 rounded-2xl p-6">
+            <div class="p-3 rounded-xl bg-purple-500/20 text-purple-300 w-fit mb-3">
+              <i class="fa-solid fa-volume-high text-xl"></i>
+            </div>
+            <h3 class="text-lg font-bold text-white mb-2">Mengapa Audio Sangat Penting?</h3>
+            <p class="text-xs text-slate-300 leading-relaxed">
+              Untuk video pembelajaran atau presentasi: <strong class="text-white">Gambar bagus tetapi suara buruk tetap dapat mengganggu penonton</strong>. Penonton jauh lebih toleran terhadap visual dibanding suara kresek-kresek atau bising.
+            </p>
+          </div>
+
+          <!-- Audio Checklist -->
+          <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-6 space-y-3">
+            <span class="text-xs font-bold text-purple-400 uppercase tracking-wider block">4 Langkah Praktis Rekam Audio Jernih:</span>
+
+            <ul class="space-y-3 text-xs text-slate-300">
+              <li class="flex items-start space-x-3">
+                <i class="fa-solid fa-mobile-screen text-purple-400 mt-1"></i>
+                <div>
+                  <strong class="text-white">Dekatkan Sumber Suara dengan HP</strong>
+                  <p class="text-slate-400 text-[11px]">Semakin dekat jarak pembicara ke mikrofon HP, semakin jernih vokal terrekam.</p>
+                </div>
+              </li>
+              <li class="flex items-start space-x-3">
+                <i class="fa-solid fa-ear-deaf text-purple-400 mt-1"></i>
+                <div>
+                  <strong class="text-white">Hindari Tempat Terlalu Bising</strong>
+                  <p class="text-slate-400 text-[11px]">Pilih ruangan yang tenang atau tunggu suara keramaian mereda.</p>
+                </div>
+              </li>
+              <li class="flex items-start space-x-3">
+                <i class="fa-solid fa-hand text-purple-400 mt-1"></i>
+                <div>
+                  <strong class="text-white">Jangan Menutup Mikrofon HP</strong>
+                  <p class="text-slate-400 text-[11px]">Pastikan jari jemari tidak menutupi lubang mic bawah/atas HP saat memegang.</p>
+                </div>
+              </li>
+              <li class="flex items-start space-x-3">
+                <i class="fa-solid fa-rotate-left text-purple-400 mt-1"></i>
+                <div>
+                  <strong class="text-white">Rekam Ulang Jika Suara Tidak Jelas</strong>
+                  <p class="text-slate-400 text-[11px]">Selalu dengarkan kembali rekaman (paling baik gunakan earphone) sebelum mengedit.</p>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Right Interactive Audio Level Waveform Simulator -->
+        <div class="lg:col-span-7 bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl">
+          <div class="flex items-center justify-between mb-4">
+            <span class="text-xs font-semibold text-slate-300">
+              <i class="fa-solid fa-sliders text-purple-400 mr-2"></i> Simulasi Kualitas Mikrofon
+            </span>
+            <span class="text-[10px] font-mono text-purple-400 bg-purple-950 px-2 py-1 rounded border border-purple-800">
+              AUDIO METERS
+            </span>
+          </div>
+
+          <!-- Waveform Visualizer Screen -->
+          <div class="bg-slate-950 rounded-2xl border border-slate-800 p-6 space-y-6">
+            <!-- Simulated Equalizer Waveform -->
+            <div>
+              <div class="flex justify-between text-xs font-mono mb-2">
+                <span class="text-slate-400">INPUT SIGNAL</span>
+                <span id="audio-state-text" class="text-emerald-400 font-bold">SUARA JERNIH (Jarak Dekat)</span>
+              </div>
+
+              <!-- Animated Equalizer Bars -->
+              <div id="audio-waveform-bars" class="h-20 flex items-end justify-center space-x-1.5 p-2 bg-slate-900/60 rounded-xl border border-slate-800">
+                <!-- Bars dynamically created via Javascript -->
+              </div>
+            </div>
+
+            <!-- Interactive Mode Switcher -->
+            <div class="grid grid-cols-3 gap-2">
+              <button onclick="setAudioSim('good')" id="audio-btn-good" class="p-3 rounded-xl border border-purple-500 bg-purple-500/20 text-white text-xs font-semibold transition text-left flex flex-col justify-between">
+                <span class="font-bold text-emerald-400 mb-1">✓ Dekat & Jernih</span>
+                <span class="text-[10px] text-slate-300">HP dekat, ruang tenang</span>
+              </button>
+              <button onclick="setAudioSim('far')" id="audio-btn-far" class="p-3 rounded-xl border border-slate-800 bg-slate-900 text-slate-400 text-xs font-semibold hover:border-purple-500/50 transition text-left flex flex-col justify-between">
+                <span class="font-bold text-yellow-400 mb-1">⚠ Terlalu Jauh</span>
+                <span class="text-[10px] text-slate-400">Suara gema & kecil</span>
+              </button>
+              <button onclick="setAudioSim('noisy')" id="audio-btn-noisy" class="p-3 rounded-xl border border-slate-800 bg-slate-900 text-slate-400 text-xs font-semibold hover:border-purple-500/50 transition text-left flex flex-col justify-between">
+                <span class="font-bold text-red-400 mb-1">✕ Mic Tertutup / Bising</span>
+                <span class="text-[10px] text-slate-400">Kresek & terdistorsi</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Bottom Info Card -->
+          <div class="mt-4 p-4 rounded-xl bg-slate-950 border border-slate-800 text-xs text-slate-300">
+            <strong class="text-white block mb-1" id="audio-tip-title">Tips Merekam Menggunakan HP:</strong>
+            <p id="audio-tip-desc">
+              Gunakan mic bawaan headset/earphone atau tempatkan mikrofon HP sekitar 20-30 cm dari mulut pembicara agar suara vokal terdengar fokus dan minim gema.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- QUICK INTERACTIVE QUIZ / CHECKLIST -->
+    <section class="pt-8 border-t border-slate-800/80">
+      <div class="bg-gradient-to-r from-slate-900 via-slate-900 to-slate-950 border border-slate-800 rounded-3xl p-6 md:p-8 shadow-2xl">
+        <div class="max-w-3xl mx-auto text-center">
+          <div class="w-12 h-12 rounded-2xl bg-brand-500/20 text-brand-500 flex items-center justify-center mx-auto mb-4 text-xl">
+            <i class="fa-solid fa-clipboard-check"></i>
+          </div>
+          <h2 class="text-2xl font-bold text-white mb-2">Checklist Sebelum Mulai Merekam</h2>
+          <p class="text-xs sm:text-sm text-slate-400 mb-6">
+            Gunakan panduan singkat ini saat hendak memproduksi video sekolah Anda:
+          </p>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-left">
+            <label class="p-3.5 rounded-xl bg-slate-950 border border-slate-800 flex items-center space-x-3 cursor-pointer hover:border-brand-500/40 transition">
+              <input type="checkbox" class="w-4 h-4 rounded text-brand-600 focus:ring-brand-500 bg-slate-900 border-slate-700">
+              <span class="text-xs text-slate-200"><strong>Framing:</strong> Sudah pilih Long, Medium, atau Close-up?</span>
+            </label>
+            <label class="p-3.5 rounded-xl bg-slate-950 border border-slate-800 flex items-center space-x-3 cursor-pointer hover:border-brand-500/40 transition">
+              <input type="checkbox" class="w-4 h-4 rounded text-brand-600 focus:ring-brand-500 bg-slate-900 border-slate-700">
+              <span class="text-xs text-slate-200"><strong>Angle:</strong> Kamera sejajar mata (Eye level)?</span>
+            </label>
+            <label class="p-3.5 rounded-xl bg-slate-950 border border-slate-800 flex items-center space-x-3 cursor-pointer hover:border-brand-500/40 transition">
+              <input type="checkbox" class="w-4 h-4 rounded text-brand-600 focus:ring-brand-500 bg-slate-900 border-slate-700">
+              <span class="text-xs text-slate-200"><strong>Komposisi:</strong> Objek berada di garis Rule of Thirds?</span>
+            </label>
+            <label class="p-3.5 rounded-xl bg-slate-950 border border-slate-800 flex items-center space-x-3 cursor-pointer hover:border-brand-500/40 transition">
+              <input type="checkbox" class="w-4 h-4 rounded text-brand-600 focus:ring-brand-500 bg-slate-900 border-slate-700">
+              <span class="text-xs text-slate-200"><strong>Cahaya:</strong> Objek terang & tidak membelakangi sinar?</span>
+            </label>
+            <label class="p-3.5 rounded-xl bg-slate-950 border border-slate-800 flex items-center space-x-3 cursor-pointer hover:border-brand-500/40 transition md:col-span-2">
+              <input type="checkbox" class="w-4 h-4 rounded text-brand-600 focus:ring-brand-500 bg-slate-900 border-slate-700">
+              <span class="text-xs text-slate-200"><strong>Audio:</strong> Ruangan tenang, mic dekat HP, dan tidak tertutup jari?</span>
+            </label>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="border-t border-slate-800/80 bg-slate-950 py-8 text-center text-xs text-slate-500">
+    <div class="max-w-6xl mx-auto px-4">
+      <p class="font-medium text-slate-400 mb-1">Materi Dasar Teknik Pengambilan Gambar & Video Sekolah</p>
+      <p>© 2026 CineBasic Interactive Guide. Dibuat untuk pembelajaran media dan sinematografi siswa.</p>
+    </div>
+  </footer>
+
+  <!-- INTERACTIVE JAVASCRIPT LOGIC -->
+  <script>
+    // --- MODULE 1: FRAMING LOGIC ---
+    const framingData = {
+      long: {
+        title: "1. Long Shot (LS) - Kondisi Kelas",
+        desc: "Memperlihatkan seluruh lingkungan kelas. Membantu penonton memahami situasi latar tempat dan suasana ruang belajar sebelum masuk ke detail.",
+        contentHTML: `
+          <div class="absolute inset-0 bg-slate-900 flex flex-col justify-end p-6">
+            <!-- Simulated Classroom Environment -->
+            <div class="absolute top-6 left-1/2 -translate-x-1/2 w-48 h-20 bg-slate-800 border border-slate-700 rounded-lg flex items-center justify-center text-slate-400 font-mono text-[10px]">
+              [ PAPAN TULIS KELAS ]
+            </div>
+            <!-- Desks & Students -->
+            <div class="flex justify-around items-end w-full h-32 px-10">
+              <div class="flex flex-col items-center">
+                <i class="fa-solid fa-user-graduate text-slate-400 text-2xl mb-1"></i>
+                <div class="w-12 h-6 bg-slate-800 border border-slate-700 rounded"></div>
+              </div>
+              <div class="flex flex-col items-center">
+                <i class="fa-solid fa-user-graduate text-brand-400 text-3xl mb-1 animate-bounce"></i>
+                <div class="w-12 h-6 bg-slate-800 border border-slate-700 rounded"></div>
+              </div>
+              <div class="flex flex-col items-center">
+                <i class="fa-solid fa-user-graduate text-slate-400 text-2xl mb-1"></i>
+                <div class="w-12 h-6 bg-slate-800 border border-slate-700 rounded"></div>
+              </div>
+            </div>
+            <span class="absolute bottom-2 left-1/2 -translate-x-1/2 text-[10px] font-mono text-brand-400 bg-brand-950/80 px-2 py-0.5 rounded border border-brand-800">LONG SHOT: Objek + Lingkungan Sekitar</span>
+          </div>
+        `
+      },
+      medium: {
+        title: "2. Medium Shot (MS) - Siswa Membersihkan Kelas",
+        desc: "Memperlihatkan siswa dari jarak sedang (pinggang ke atas). Berfokus pada aktivitas utama (siswa sedang menyapu/membersihkan ruangan).",
+        contentHTML: `
+          <div class="absolute inset-0 bg-slate-900 flex flex-col items-center justify-center p-4">
+            <div class="flex flex-col items-center">
+              <!-- Student upper body -->
+              <div class="w-24 h-24 rounded-full bg-brand-500/20 border-2 border-brand-500 flex items-center justify-center text-brand-400 text-5xl mb-2 shadow-xl">
+                <i class="fa-solid fa-broom"></i>
+              </div>
+              <span class="text-xs font-bold text-white">Siswa Sedang Menyapu</span>
+              <span class="text-[10px] text-slate-400">Aktivitas Terlihat Jelas</span>
+            </div>
+            <span class="absolute bottom-2 left-1/2 -translate-x-1/2 text-[10px] font-mono text-brand-400 bg-brand-950/80 px-2 py-0.5 rounded border border-brand-800">MEDIUM SHOT: Jarak Sedang (Aksi Objek)</span>
+          </div>
+        `
+      },
+      close: {
+        title: "3. Close-up (CU) - Sampah yang Dikumpulkan",
+        desc: "Menonjolkan detail penting dari proyek. Kamera fokus penuh pada tumpukan sampah yang dikumpulkan di pengki/tempat sampah.",
+        contentHTML: `
+          <div class="absolute inset-0 bg-slate-900 flex flex-col items-center justify-center p-4">
+            <div class="w-36 h-36 rounded-2xl bg-amber-500/20 border-2 border-amber-400 flex flex-col items-center justify-center text-amber-400 shadow-2xl scale-110">
+              <i class="fa-solid fa-trash-can text-6xl mb-2"></i>
+              <span class="text-[10px] font-bold text-amber-300">DETAIL SAMPAH</span>
+            </div>
+            <span class="absolute bottom-2 left-1/2 -translate-x-1/2 text-[10px] font-mono text-brand-400 bg-brand-950/80 px-2 py-0.5 rounded border border-brand-800">CLOSE-UP: Detail Objek Utama</span>
+          </div>
+        `
+      }
+    };
+
+    function setFramingTab(key) {
+      ['long', 'medium', 'close'].forEach(k => {
+        const btn = document.getElementById(`btn-${k}`);
+        if(k === key) {
+          btn.className = "px-3 py-1 rounded-lg text-xs font-semibold text-white bg-brand-600 transition";
+        } else {
+          btn.className = "px-3 py-1 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition";
+        }
+      });
+
+      document.getElementById('framing-viewport-content').innerHTML = framingData[key].contentHTML;
+      document.getElementById('framing-title').innerText = framingData[key].title;
+      document.getElementById('framing-desc').innerText = framingData[key].desc;
+    }
+
+    // --- MODULE 2: ANGLE LOGIC ---
+    function setAngle(type) {
+      const rig = document.getElementById('angle-camera-rig');
+      const subject = document.getElementById('angle-subject');
+      const degText = document.getElementById('angle-degrees-text');
+      const tagText = document.getElementById('angle-label-tag');
+      const title = document.getElementById('angle-card-title');
+      const desc = document.getElementById('angle-card-desc');
+
+      ['high', 'eye', 'low'].forEach(k => {
+        const btn = document.getElementById(`angle-btn-${k}`);
+        if (k === type) {
+          btn.className = "py-2.5 px-3 rounded-xl border-2 border-blue-500 bg-blue-500/10 text-white text-xs font-semibold transition text-center flex flex-col items-center";
+        } else {
+          btn.className = "py-2.5 px-3 rounded-xl border border-slate-800 bg-slate-950 text-slate-300 text-xs font-semibold hover:border-blue-500/50 transition text-center flex flex-col items-center";
+        }
+      });
+
+      if (type === 'high') {
+        rig.style.top = '10%';
+        degText.innerText = "+45° High Angle";
+        tagText.innerText = "HIGH ANGLE";
+        subject.style.transform = "scale(0.85) translateY(10px)";
+        title.innerText = "High Angle (Kamera Lebih Tinggi)";
+        desc.innerText = "Kamera ditempatkan lebih tinggi dari posisi objek dan mengarah ke bawah. Membuat objek terkesan lebih kecil, rendah, atau fokus pada area lantai/bawah.";
+      } else if (type === 'eye') {
+        rig.style.top = '40%';
+        degText.innerText = "0° Eye Level";
+        tagText.innerText = "EYE LEVEL";
+        subject.style.transform = "scale(1) translateY(0px)";
+        title.innerText = "Eye Level (Sejajar Mata)";
+        desc.innerText = "Kamera sejajar dengan mata objek. Memberikan sudut pandang wajar, nyaman, netral, dan mudah dicerna oleh penonton.";
+      } else if (type === 'low') {
+        rig.style.top = '70%';
+        degText.innerText = "-45° Low Angle";
+        tagText.innerText = "LOW ANGLE";
+        subject.style.transform = "scale(1.15) translateY(-10px)";
+        title.innerText = "Low Angle (Kamera Lebih Rendah)";
+        desc.innerText = "Kamera ditempatkan lebih rendah dari posisi objek dan mengarah ke atas. Memberikan efek objek terlihat wibawa, megah, atau lebih tinggi.";
+      }
+    }
+
+    // --- MODULE 3: RULE OF THIRDS DRAGGABLE & PRESETS ---
+    let isGridVisible = true;
+    function toggleGridLines() {
+      const overlay = document.getElementById('rot-grid-overlay');
+      const btn = document.getElementById('btn-toggle-grid');
+      isGridVisible = !isGridVisible;
+      if (isGridVisible) {
+        overlay.style.opacity = '1';
+        btn.className = "px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold transition";
+      } else {
+        overlay.style.opacity = '0';
+        btn.className = "px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold transition";
+      }
+    }
+
+    function setSubjectPreset(preset) {
+      const subject = document.getElementById('draggable-subject');
+      subject.style.transition = "all 0.4s ease";
+      
+      if (preset === 'center') {
+        subject.style.left = '50%';
+        subject.style.top = '50%';
+      } else if (preset === 'rot-top-right') {
+        subject.style.left = '66.66%';
+        subject.style.top = '33.33%';
+      } else if (preset === 'rot-bottom-left') {
+        subject.style.left = '33.33%';
+        subject.style.top = '66.66%';
+      }
+
+      setTimeout(() => {
+        subject.style.transition = "none";
+      }, 400);
+    }
+
+    function resetSubjectPos() {
+      setSubjectPreset('center');
+    }
+
+    // Draggable Logic for Subject
+    const rotContainer = document.getElementById('rot-container');
+    const dragSubject = document.getElementById('draggable-subject');
+    let isDragging = false;
+
+    dragSubject.addEventListener('mousedown', startDrag);
+    dragSubject.addEventListener('touchstart', startDrag, {passive: true});
+
+    window.addEventListener('mousemove', moveDrag);
+    window.addEventListener('touchmove', moveDrag, {passive: false});
+
+    window.addEventListener('mouseup', endDrag);
+    window.addEventListener('touchend', endDrag);
+
+    function startDrag(e) {
+      isDragging = true;
+      dragSubject.style.transition = "none";
+    }
+
+    function moveDrag(e) {
+      if (!isDragging) return;
+      const rect = rotContainer.getBoundingClientRect();
+      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+      const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+
+      let x = ((clientX - rect.left) / rect.width) * 100;
+      let y = ((clientY - rect.top) / rect.height) * 100;
+
+      // Bound within container
+      x = Math.max(10, Math.min(90, x));
+      y = Math.max(15, Math.min(85, y));
+
+      dragSubject.style.left = `${x}%`;
+      dragSubject.style.top = `${y}%`;
+    }
+
+    function endDrag() {
+      isDragging = false;
+    }
+
+    // --- MODULE 4: LIGHTING LOGIC ---
+    function setLightingMode(mode) {
+      const scene = document.getElementById('lighting-scene');
+      const badge = document.getElementById('lighting-status-badge');
+      const desc = document.getElementById('lighting-status-desc');
+      const btnGood = document.getElementById('btn-light-good');
+      const btnBad = document.getElementById('btn-light-bad');
+
+      if (mode === 'good') {
+        btnGood.className = "px-3 py-1 rounded-lg text-xs font-semibold text-white bg-amber-600 transition";
+        btnBad.className = "px-3 py-1 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition";
+        
+        badge.className = "inline-block px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 font-bold mb-2";
+        badge.innerText = "✓ Posisi Benar (Wajah Terang & Jelas)";
+        desc.innerText = "Sumber cahaya (lampu/jendela) berada di BELAKANG kamera dan menerangi wajah objek secara langsung. Hasil video terlihat tajam dan tidak gelap.";
+
+        scene.innerHTML = `
+          <div class="flex items-center justify-around w-full px-12 relative">
+            <!-- Light source behind camera -->
+            <div class="flex flex-col items-center">
+              <i class="fa-solid fa-sun text-amber-400 text-5xl animate-pulse"></i>
+              <span class="text-[10px] text-amber-300 font-mono mt-1">Sumber Cahaya</span>
+            </div>
+            <!-- Arrow -->
+            <div class="text-amber-400 text-2xl font-bold">&rarr;</div>
+            <!-- Camera -->
+            <div class="flex flex-col items-center">
+              <i class="fa-solid fa-video text-slate-300 text-3xl"></i>
+              <span class="text-[10px] text-slate-400 font-mono mt-1">Kamera HP</span>
+            </div>
+            <!-- Arrow -->
+            <div class="text-amber-400 text-2xl font-bold">&rarr;</div>
+            <!-- Character lit brightly -->
+            <div class="flex flex-col items-center p-3 rounded-2xl bg-amber-500/20 border-2 border-amber-400">
+              <i class="fa-solid fa-user-tie text-amber-200 text-5xl"></i>
+              <span class="text-[10px] text-white font-bold mt-1">Objek Terang</span>
+            </div>
+          </div>
+        `;
+      } else {
+        btnBad.className = "px-3 py-1 rounded-lg text-xs font-semibold text-white bg-red-600 transition";
+        btnGood.className = "px-3 py-1 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition";
+
+        badge.className = "inline-block px-2.5 py-0.5 rounded-full bg-red-500/10 text-red-400 font-bold mb-2";
+        badge.innerText = "✕ Backlight / Objek Gelap";
+        desc.innerText = "Objek membelakangi sumber cahaya kuat (misal: di depan jendela terang). Akibatnya, wajah objek menjadi siluet dan tampak sangat gelap.";
+
+        scene.innerHTML = `
+          <div class="flex items-center justify-around w-full px-12 relative">
+            <!-- Light source behind subject -->
+            <div class="flex flex-col items-center">
+              <i class="fa-solid fa-sun text-amber-400 text-5xl animate-pulse"></i>
+              <span class="text-[10px] text-amber-300 font-mono mt-1">Sinar Terang</span>
+            </div>
+            <!-- Arrow -->
+            <div class="text-red-400 text-2xl font-bold">&rarr;</div>
+            <!-- Character turned into silhouette -->
+            <div class="flex flex-col items-center p-3 rounded-2xl bg-black border-2 border-red-500">
+              <i class="fa-solid fa-user-tie text-slate-900 text-5xl"></i>
+              <span class="text-[10px] text-red-400 font-bold mt-1">Siluet Gelap</span>
+            </div>
+            <!-- Arrow -->
+            <div class="text-red-400 text-2xl font-bold">&rarr;</div>
+            <!-- Camera -->
+            <div class="flex flex-col items-center">
+              <i class="fa-solid fa-video text-slate-300 text-3xl"></i>
+              <span class="text-[10px] text-slate-400 font-mono mt-1">Kamera HP</span>
+            </div>
+          </div>
+        `;
+      }
+    }
+
+    // --- MODULE 5: AUDIO EQUALIZER SIMULATOR ---
+    const waveformContainer = document.getElementById('audio-waveform-bars');
+    const BAR_COUNT = 24;
+
+    function buildBars() {
+      waveformContainer.innerHTML = '';
+      for (let i = 0; i < BAR_COUNT; i++) {
+        const bar = document.createElement('div');
+        bar.className = 'w-2 bg-purple-500 rounded-full transition-all duration-150';
+        bar.style.height = '20%';
+        waveformContainer.appendChild(bar);
+      }
+    }
+
+    let audioAnimInterval = null;
+
+    function animateAudioBars(minH, maxH, colorClass) {
+      if (audioAnimInterval) clearInterval(audioAnimInterval);
+      const bars = waveformContainer.children;
+
+      audioAnimInterval = setInterval(() => {
+        for (let bar of bars) {
+          const h = Math.floor(Math.random() * (maxH - minH + 1)) + minH;
+          bar.style.height = `${h}%`;
+          bar.className = `w-2 rounded-full transition-all duration-150 ${colorClass}`;
+        }
+      }, 150);
+    }
+
+    function setAudioSim(mode) {
+      const stateText = document.getElementById('audio-state-text');
+      const tipTitle = document.getElementById('audio-tip-title');
+      const tipDesc = document.getElementById('audio-tip-desc');
+
+      ['good', 'far', 'noisy'].forEach(k => {
+        const btn = document.getElementById(`audio-btn-${k}`);
+        if(k === mode) {
+          btn.className = "p-3 rounded-xl border-2 border-purple-500 bg-purple-500/20 text-white text-xs font-semibold transition text-left flex flex-col justify-between";
+        } else {
+          btn.className = "p-3 rounded-xl border border-slate-800 bg-slate-900 text-slate-400 text-xs font-semibold hover:border-purple-500/50 transition text-left flex flex-col justify-between";
+        }
+      });
+
+      if (mode === 'good') {
+        stateText.innerText = "SUARA JERNIH (Posisi Dekat)";
+        stateText.className = "text-emerald-400 font-bold";
+        tipTitle.innerText = "✓ Kondisi Ideal Rekaman Audio:";
+        tipDesc.innerText = "Mikrofon dekat dengan sumber suara (20-30 cm) dan berada di ruang yang tenang. Gelombang suara stabil dan terdengar fokus.";
+        animateAudioBars(30, 90, 'bg-emerald-400');
+      } else if (mode === 'far') {
+        stateText.innerText = "SUARA KECIL & BERGEMA (Terlalu Jauh)";
+        stateText.className = "text-yellow-400 font-bold";
+        tipTitle.innerText = "⚠ Gejala HP Terlalu Jauh:";
+        tipDesc.innerText = "Suara pembicara terdengar samar, kecil, dan banyak memantul (gema ruangan). Solusi: Dekatkan HP atau gunakan earphone mic.";
+        animateAudioBars(5, 25, 'bg-yellow-400');
+      } else if (mode === 'noisy') {
+        stateText.innerText = "SUARA KRESEK & BISING (Mic Tertutup)";
+        stateText.className = "text-red-400 font-bold";
+        tipTitle.innerText = "✕ Gangguan Suara Bising/Mic Tertutup:";
+        tipDesc.innerText = "Terjadi gesekan tangan pada lubang mic atau keramaian luar yang mengganggu. Solusi: Pastikan jari tidak menutupi mic dan pilih lokasi tenang.";
+        animateAudioBars(70, 100, 'bg-red-500');
+      }
+    }
+
+    // INITIALIZATION ON PAGE LOAD
+    window.onload = function() {
+      setFramingTab('long');
+      setAngle('eye');
+      setSubjectPreset('center');
+      setLightingMode('good');
+      buildBars();
+      setAudioSim('good');
+    };
+  </script>
+</body>
+</html>
